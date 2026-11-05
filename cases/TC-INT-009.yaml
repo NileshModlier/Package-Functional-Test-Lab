@@ -1,0 +1,31 @@
+id: TC-INT-009
+title: Pass an assessment at 80.01
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-004
+acceptance_criteria:
+  - REQ-INT-004 AC-2
+technique: Boundary Value Analysis
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-06
+objective: The first value above the threshold passes whether or not the pass-mark defect is on.
+preconditions:
+  - POST /test/reset. ENR-01 is In Progress. Leave pass_mark at its seeded ON value.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments/ENR-01/assessment with score 80.01.
+expected_results:
+  - HTTP 200.
+  - state is Passed.
+  - score is 80.01.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

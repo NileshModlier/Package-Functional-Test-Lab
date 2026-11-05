@@ -1,0 +1,34 @@
+id: TC-VER-008
+title: Classify 80.01 as meeting standard without changing the raw total
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-004
+acceptance_criteria:
+  - REQ-VER-004 AC-3
+  - REQ-VER-004 AC-4
+  - REQ-VER-004 AC-5
+technique: Boundary Value Analysis
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-VER-03
+objective: The first value above 80.00 meets the standard. A pending evaluation has no classification.
+preconditions:
+  - POST /test/reset. EV-01 is Pending and unclassified.
+defect_switches:
+  - Set quality_score to false.
+steps:
+  - Read EV-01 before submit.
+  - Submit A 2/2, B 1/1, C 0.0005/1.
+expected_results:
+  - Before submit, score and classification are empty.
+  - After submit, score is 80.01 and classification is Meets standard.
+  - The stored score remains 80.01 rather than being rewritten to 80 or 100.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

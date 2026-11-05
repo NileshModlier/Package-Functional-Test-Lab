@@ -1,0 +1,31 @@
+id: TC-TRI-020
+title: Reject closure directly from in progress
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-009
+acceptance_criteria:
+  - REQ-TRI-009 AC-5
+technique: Negative Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-07
+objective: INPRG to CLOSE is the example illegal transition. It stays illegal with every defect switch on.
+preconditions:
+  - POST /test/reset. WO-05 is INPRG. Leave the seeded defect switches on.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders/WO-05/transition with to CLOSE.
+expected_results:
+  - The response is HTTP 409.
+  - "The detail contains INPRG -> CLOSE."
+  - state stays INPRG and closed_at stays empty.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

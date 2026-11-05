@@ -1,0 +1,33 @@
+id: TC-TRI-004
+title: Approve a waiting request as a different person
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-002
+acceptance_criteria:
+  - REQ-TRI-002 AC-1
+  - REQ-TRI-002 AC-5
+technique: State Transition Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-01
+  - ASM-TRI-03
+objective: WAPPR to APPR is the approval transition. Draft cannot take that transition.
+preconditions:
+  - POST /test/reset. WO-02 is WAPPR. WO-01 is Draft.
+defect_switches:
+  []
+steps:
+  - POST WO-02 transition to APPR with actor_id AP-01.
+  - POST WO-01 transition to APPR with actor_id AP-01.
+expected_results:
+  - WO-02 returns HTTP 200, state APPR, and approved_by AP-01.
+  - WO-01 returns HTTP 409 and stays Draft.
+known_sut_differences:
+  - Approval time is not stored. Rejecting a request to CAN is not a simulator state. Do not expect CAN from this build.
+execution:
+  automated: false
+  result: not-run

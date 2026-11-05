@@ -1,0 +1,34 @@
+id: TC-INT-008
+title: Pass an assessment at the inclusive threshold of 80.00
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-004
+acceptance_criteria:
+  - REQ-INT-004 AC-1
+  - REQ-INT-004 AC-4
+  - REQ-INT-004 AC-5
+technique: Boundary Value Analysis
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-INT-06
+objective: The on-boundary value 80.00 is a pass when the planted pass-mark defect is off.
+preconditions:
+  - POST /test/reset. ENR-01 is In Progress.
+defect_switches:
+  - Set pass_mark to false.
+steps:
+  - POST /api/learning/enrollments/ENR-01/assessment with score 80.00.
+expected_results:
+  - HTTP 200.
+  - state is Passed and the attempt outcome is Passed.
+  - score is 80.00.
+  - certificate_id is still empty. Passing does not issue the certificate.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

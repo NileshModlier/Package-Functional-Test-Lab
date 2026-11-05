@@ -1,0 +1,33 @@
+id: TC-TRI-019
+title: Close a completed work order
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-009
+acceptance_criteria:
+  - REQ-TRI-009 AC-1
+  - REQ-TRI-009 AC-4
+technique: State Transition Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-TRI-06
+  - ASM-TRI-09
+objective: COMP to CLOSE is the closure transition. Later time is rejected.
+preconditions:
+  - POST /test/reset. WO-07 is COMP.
+defect_switches:
+  - Set reopen_closed to false before the follow-up time post, so closure stays closed.
+steps:
+  - POST WO-07 transition to CLOSE.
+  - POST WO-07 time with technician_id TEC-01 and hours 1.
+expected_results:
+  - The transition returns HTTP 200, state CLOSE, and closed_at is set.
+  - The time post returns HTTP 409.
+known_sut_differences:
+  - reservations_released, survey_due, and a requestor notification record are not stored. The same work-order id is the parent request.
+execution:
+  automated: false
+  result: not-run

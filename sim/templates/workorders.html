@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Work orders</h1>
+<p>States: Draft, WAPPR, APPR, INPRG, WMATL, COMP, CLOSE. An illegal move returns HTTP 409 from the API.</p>
+
+<h2>New request</h2>
+<form method="post" action="/ui/work/orders" data-testid="request-form">
+  <label>Title <input name="title" data-testid="request-title" required></label>
+  <label>Requester <input name="requester_id" data-testid="request-requester" value="RQ-01" required></label>
+  <label>Building <input name="building" data-testid="request-building" value="HQ" required></label>
+  <label>Request class <input name="request_class" data-testid="request-class" value="General" required></label>
+  <label>Description <input name="description" data-testid="request-description" required></label>
+  <button type="submit" data-testid="request-submit">Save draft</button>
+</form>
+
+<h2>Orders</h2>
+{% for order in orders %}
+<article class="record" data-testid="order-{{ order.id }}">
+  <h3>{{ order.id }} <span class="state" data-testid="state">{{ order.state }}</span></h3>
+  <p>{{ order.title }} · {{ order.building }} · {{ order.request_class }}</p>
+  <p data-testid="assignment">Requester {{ order.requester_id }} · Technician {{ order.technician_id or "unassigned" }}</p>
+  <form method="post" action="/ui/work/orders/{{ order.id }}/transition">
+    <label>Move to
+      <select name="to" data-testid="transition-to">
+        {% for state in states %}<option value="{{ state }}">{{ state }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Actor <input name="actor_id" data-testid="actor" value="AP-01"></label>
+    <label>Reason <input name="reason" data-testid="reason"></label>
+    <button type="submit" data-testid="apply">Apply</button>
+  </form>
+  <form method="post" action="/ui/work/orders/{{ order.id }}/assign">
+    <label>Assign
+      <select name="technician_id" data-testid="technician">
+        {% for technician in technicians %}
+        <option value="{{ technician.id }}">{{ technician.name }}{% if not technician.active %} (inactive){% endif %}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit" data-testid="assign">Assign</button>
+  </form>
+</article>
+{% endfor %}
+{% endblock %}

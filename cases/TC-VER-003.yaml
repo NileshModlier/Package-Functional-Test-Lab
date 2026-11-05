@@ -1,0 +1,33 @@
+id: TC-VER-003
+title: Reject a submit that omits a mandatory section
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-002
+acceptance_criteria:
+  - REQ-VER-002 AC-2
+  - REQ-VER-002 AC-3
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-02
+objective: Sections A, B, and C are mandatory. A missing section does not score the form.
+preconditions:
+  - POST /test/reset. EV-01 is Pending.
+defect_switches:
+  []
+steps:
+  - POST /api/quality/evaluations/EV-01/submit with only sections A and B.
+  - GET /api/quality/evaluations and read EV-01.
+expected_results:
+  - The response is HTTP 422.
+  - EV-01 stays Pending.
+  - score and classification stay empty.
+known_sut_differences:
+  - The simulator does not save one confirmed answer while others remain empty. Partial save is not a separate state.
+execution:
+  automated: false
+  result: not-run

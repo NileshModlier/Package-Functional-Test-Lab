@@ -1,0 +1,32 @@
+id: TC-VER-013
+title: Resolve a dispute back to under review
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-007
+acceptance_criteria:
+  - REQ-VER-007 AC-4
+technique: State Transition Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-05
+objective: Disputed returns to Under Review without a new score.
+preconditions:
+  - POST /test/reset. EV-04 is Disputed with score 50.0.
+defect_switches:
+  []
+steps:
+  - POST /api/quality/evaluations/EV-04/resolve.
+expected_results:
+  - HTTP 200.
+  - state is Under Review.
+  - score remains 50.0.
+  - The dispute comment is still present.
+known_sut_differences:
+  - M1 Resolved is not a stored state. The simulator uses the return to Under Review as the resolution.
+execution:
+  automated: false
+  result: not-run

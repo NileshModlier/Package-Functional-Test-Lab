@@ -1,0 +1,33 @@
+id: TC-VER-009
+title: Acknowledge a scored evaluation without changing the score
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-006
+acceptance_criteria:
+  - REQ-VER-006 AC-1
+  - REQ-VER-006 AC-3
+technique: State Transition Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-04
+objective: Under Review moves to Acknowledged. The total stays put.
+preconditions:
+  - POST /test/reset. EV-02 is Under Review with score 70.0.
+defect_switches:
+  []
+steps:
+  - POST /api/quality/evaluations/EV-02/acknowledge.
+expected_results:
+  - HTTP 200.
+  - state is Acknowledged.
+  - acknowledged_at is set.
+  - score remains 70.0 and classification remains Below standard.
+known_sut_differences:
+  - The simulator does not record a distinct acknowledging actor, so a wrong-actor check cannot be executed.
+execution:
+  automated: false
+  result: not-run

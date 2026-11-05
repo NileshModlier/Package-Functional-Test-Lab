@@ -1,0 +1,34 @@
+id: TC-VER-007
+title: Classify 79.99 as below standard and 80.00 as meeting standard
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-004
+acceptance_criteria:
+  - REQ-VER-004 AC-1
+  - REQ-VER-004 AC-2
+  - REQ-VER-004 AC-4
+technique: Boundary Value Analysis
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-VER-03
+objective: The quality threshold is inclusive at 80.00. These totals are produced with weights applied.
+preconditions:
+  - POST /test/reset before each value. EV-01 is Pending.
+defect_switches:
+  - Set quality_score to false. Do not use pass_mark for this threshold.
+steps:
+  - Submit A 1.9995/2, B 1/1, C 0/1.
+  - Reset and submit A 2/2, B 1/1, C 0/1.
+expected_results:
+  - 1.9995/2 with B full and C zero stores 79.99 and Below standard.
+  - 2/2 with B full and C zero stores 80.00 and Meets standard.
+  - The raw score remains stored beside the classification.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

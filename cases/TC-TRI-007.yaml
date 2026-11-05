@@ -1,0 +1,32 @@
+id: TC-TRI-007
+title: Assign an active technician without starting the work
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-004
+acceptance_criteria:
+  - REQ-TRI-004 AC-3
+technique: State Transition Testing
+priority: Medium
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-TRI-05
+objective: Assignment fills the resource and leaves the state at APPR.
+preconditions:
+  - POST /test/reset. WO-03 is APPR and unassigned. TEC-01 is active.
+defect_switches:
+  - Set inactive_assignment to false so this case is not using the planted assignment defect.
+steps:
+  - POST /api/work/orders/WO-03/assign with technician_id TEC-01.
+expected_results:
+  - HTTP 200.
+  - technician_id is TEC-01.
+  - state remains APPR.
+  - completed_at and closed_at stay empty.
+known_sut_differences:
+  - Auto-assign at creation is not a separate rule switch. Assignment is the explicit assign call. A second assign to TEC-01 is accepted rather than rejected.
+execution:
+  automated: false
+  result: not-run

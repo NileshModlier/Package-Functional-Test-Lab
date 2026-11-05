@@ -1,0 +1,960 @@
+{
+  "info": {
+    "name": "Package Sim Learning",
+    "description": "Learning API regression. SIMULATED \u2013 Not affiliated with Intellum, Verint, IBM TRIRIGA, or IBM Maximo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:18765"
+    },
+    {
+      "key": "enrollmentId",
+      "value": ""
+    },
+    {
+      "key": "thresholdEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "earlyEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "certificateId",
+      "value": ""
+    },
+    {
+      "key": "boundaryEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "evalDisputeId",
+      "value": ""
+    },
+    {
+      "key": "boundaryEvaluationId",
+      "value": ""
+    },
+    {
+      "key": "newOrderId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/health"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Health reports the simulated service\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.status).to.eql(\"ok\");",
+                  "    pm.expect(body.simulated).to.eql(true);",
+                  "    pm.expect(body.service).to.eql(\"package-sim\");",
+                  "    pm.expect(pm.response.headers.get(\"X-Simulated\")).to.eql(\"true\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset seed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/test/reset"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Reset reloads the seed\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.status).to.eql(\"reset\");",
+                  "    pm.expect(body.simulated).to.eql(true);",
+                  "    pm.expect(pm.response.headers.get(\"X-Simulated\")).to.eql(\"true\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disable pass_mark",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/defects/pass_mark",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"enabled\": false}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const forced = String(pm.environment.get(\"forceDefects\") || \"\").toLowerCase() === \"true\";",
+                  "if (forced) {",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Disable pass_mark so the M1 rule is under test\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"pass_mark\");",
+                  "    pm.expect(body.enabled).to.eql(false);",
+                  "    pm.expect(body.requirement).to.eql(\"REQ-INT-004\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disable certificate_date",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/defects/certificate_date",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"enabled\": false}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const forced = String(pm.environment.get(\"forceDefects\") || \"\").toLowerCase() === \"true\";",
+                  "if (forced) {",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Disable certificate_date so the M1 rule is under test\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"certificate_date\");",
+                  "    pm.expect(body.enabled).to.eql(false);",
+                  "    pm.expect(body.requirement).to.eql(\"REQ-INT-007\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Workflow",
+      "item": [
+        {
+          "name": "TC-INT-019 Read learners",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/learners"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const rows = pm.response.json();",
+                  "pm.test(\"TC-INT-019 REQ-INT-009 learners expose id and name\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(rows).to.be.an(\"array\").that.has.lengthOf(5);",
+                  "    pm.expect(rows[0]).to.include.keys(\"id\", \"name\", \"active\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-001 Enroll an available activity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"learner_id\": \"LN-01\", \"activity_id\": \"ACT-102\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-001 REQ-INT-001 enrollment is created\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body).to.include.keys(\"id\", \"learner_id\", \"activity_id\", \"state\", \"score\", \"attempts\", \"certificate_id\");",
+                  "    pm.expect(body.state).to.eql(\"Enrolled\");",
+                  "    pm.expect(body.learner_id).to.eql(\"LN-01\");",
+                  "    pm.expect(body.activity_id).to.eql(\"ACT-102\");",
+                  "    pm.expect(body.score).to.eql(null);",
+                  "    pm.expect(body.attempts).to.eql(0);",
+                  "    pm.expect(body.certificate_id).to.eql(null);",
+                  "    pm.collectionVariables.set(\"enrollmentId\", body.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-002 Reject a duplicate enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"learner_id\": \"LN-01\", \"activity_id\": \"ACT-102\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-002 REQ-INT-001 duplicate enrollment is rejected\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"active enrollment already exists\");",
+                  "    pm.expect(pm.response.headers.get(\"X-Simulated\")).to.eql(\"true\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-004 Start the enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{enrollmentId}}/start"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-004 REQ-INT-002 content modules complete on start\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(pm.collectionVariables.get(\"enrollmentId\"));",
+                  "    pm.expect(body.state).to.eql(\"In Progress\");",
+                  "    const status = {};",
+                  "    body.modules.forEach((module) => { status[module.id] = module.status; });",
+                  "    pm.expect(status[\"MOD-4\"]).to.eql(\"Complete\");",
+                  "    pm.expect(status[\"MOD-5\"]).to.eql(\"Not started\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-009 Pass at 80.01",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{enrollmentId}}/assessment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"score\": 80.01}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-009 REQ-INT-004 score 80.01 passes\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(pm.collectionVariables.get(\"enrollmentId\"));",
+                  "    pm.expect(body.state).to.eql(\"Passed\");",
+                  "    pm.expect(body.score).to.be.closeTo(80.01, 0.001);",
+                  "    pm.expect(body.attempts).to.eql(1);",
+                  "    pm.expect(body.certificate_id).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-019 Read the passed enrollment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-019 REQ-INT-009 stored enrollment keeps the pass\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const row = pm.response.json().find((item) => item.id === pm.collectionVariables.get(\"enrollmentId\"));",
+                  "    pm.expect(row).to.be.an(\"object\");",
+                  "    pm.expect(row.state).to.eql(\"Passed\");",
+                  "    pm.expect(row.score).to.be.closeTo(80.01, 0.001);",
+                  "    pm.expect(row.learner_id).to.eql(\"LN-01\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-014 Complete the passed enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{enrollmentId}}/complete"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-014 REQ-INT-006 completion is stored once\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Completed\");",
+                  "    pm.expect(body.completion_date).to.be.a(\"string\");",
+                  "    pm.expect(body.certificate_id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.collectionVariables.set(\"certificateId\", body.certificate_id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-016 Read the certificate dates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/certificates"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-016 REQ-INT-007 issued date matches completion\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const certificate = pm.response.json().find((row) => row.id === pm.collectionVariables.get(\"certificateId\"));",
+                  "    pm.expect(certificate).to.be.an(\"object\");",
+                  "    pm.expect(certificate.issued_on).to.eql(certificate.completion_date);",
+                  "    pm.expect(certificate.learner_id).to.eql(\"LN-01\");",
+                  "    pm.expect(certificate.enrollment_id).to.eql(pm.collectionVariables.get(\"enrollmentId\"));",
+                  "    pm.expect(certificate.score).to.be.closeTo(80.01, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-014 Reject a second completion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{enrollmentId}}/complete"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-014 REQ-INT-006 a completed enrollment stays completed\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Completed -> Completed\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-010 Fail at 79.99",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/ENR-01/assessment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"score\": 79.99}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-010 REQ-INT-004 REQ-INT-005 79.99 fails without a certificate\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"ENR-01\");",
+                  "    pm.expect(body.state).to.eql(\"Failed\");",
+                  "    pm.expect(body.score).to.be.closeTo(79.99, 0.001);",
+                  "    pm.expect(body.certificate_id).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-008 Enroll for the 80.00 threshold",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"learner_id\": \"LN-03\", \"activity_id\": \"ACT-102\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-008 REQ-INT-004 threshold enrollment is created\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Enrolled\");",
+                  "    pm.collectionVariables.set(\"thresholdEnrollmentId\", body.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-008 Start the threshold enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{thresholdEnrollmentId}}/start"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-008 REQ-INT-004 threshold enrollment is in progress\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().state).to.eql(\"In Progress\");",
+                  "    pm.expect(pm.response.json().id).to.eql(pm.collectionVariables.get(\"thresholdEnrollmentId\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-008 Pass at 80.00",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{thresholdEnrollmentId}}/assessment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"score\": 80.00}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-008 REQ-INT-004 score 80.00 passes\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Passed\");",
+                  "    pm.expect(body.score).to.be.closeTo(80, 0.001);",
+                  "    pm.expect(body.certificate_id).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-003 Reject an unpublished activity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"learner_id\": \"LN-02\", \"activity_id\": \"ACT-103\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-003 REQ-INT-001 a draft activity cannot be enrolled\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"not available\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-005 Enroll before an early assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"learner_id\": \"LN-02\", \"activity_id\": \"ACT-102\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-INT-005 REQ-INT-002 early enrollment is only enrolled\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Enrolled\");",
+                  "    pm.collectionVariables.set(\"earlyEnrollmentId\", body.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-005 Reject an assessment before start",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{earlyEnrollmentId}}/assessment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"score\": 50}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-005 REQ-INT-002 assessment before start is rejected\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Illegal transition\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-015 Reject completion of a failed enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/ENR-03/complete"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-015 REQ-INT-006 a failed enrollment cannot complete\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Failed -> Completed\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-020 Reject an unknown enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/ENR-99/start"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-INT-020 REQ-INT-009 an unknown enrollment is not found\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"ENR-99\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.info.iteration > 0) {",
+              "    pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pass mark boundaries",
+      "item": [
+        {
+          "name": "TC-INT-007 Enroll a boundary learner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"learner_id\": \"LN-05\", \"activity_id\": \"ACT-102\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Boundary enrollment is created\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Enrolled\");",
+                  "    pm.collectionVariables.set(\"boundaryEnrollmentId\", body.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-007 Start the boundary enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{boundaryEnrollmentId}}/start"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Boundary enrollment is in progress\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().state).to.eql(\"In Progress\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-INT-007 Assess the boundary score",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/learning/enrollments/{{boundaryEnrollmentId}}/assessment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"score\": {{score}}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "const testCase = pm.iterationData.get(\"test_case\");",
+                  "const requirement = pm.iterationData.get(\"requirement\");",
+                  "pm.test(testCase + \" \" + requirement + \" boundary score\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(pm.iterationData.get(\"expected_state\"));",
+                  "    pm.expect(body.score).to.be.closeTo(Number(pm.iterationData.get(\"expected_score\")), 0.001);",
+                  "    pm.expect(body.attempts).to.eql(1);",
+                  "    pm.expect(body.certificate_id).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const score = pm.iterationData.get(\"score\");",
+              "if (score === undefined || score === null || score === \"\") {",
+              "    pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

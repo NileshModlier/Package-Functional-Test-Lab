@@ -1,0 +1,32 @@
+id: TC-INT-015
+title: Reject completion from enrolled, in progress, and failed
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-006
+acceptance_criteria:
+  - REQ-INT-006 AC-3
+  - REQ-INT-006 AC-4
+technique: Negative Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-08
+objective: Failed, Enrolled, and In Progress do not complete.
+preconditions:
+  - POST /test/reset. ENR-03 is Failed, ENR-04 is Enrolled, ENR-01 is In Progress.
+defect_switches:
+  []
+steps:
+  - POST complete on ENR-03, ENR-04, and ENR-01.
+expected_results:
+  - Each response is HTTP 409.
+  - completion_date stays empty on all three.
+  - ENR-03 remains Failed.
+known_sut_differences:
+  - A content-only activity that completes without an assessment is not in the seed. This case does not cover REQ-INT-006 AC-5.
+execution:
+  automated: false
+  result: not-run

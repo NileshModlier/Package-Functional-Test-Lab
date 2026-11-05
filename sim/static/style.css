@@ -1,0 +1,135 @@
+:root {
+  color-scheme: light;
+  --ink: #1c1915;
+  --muted: #5c564c;
+  --line: #ddd6c8;
+  --paper: #f7f4ee;
+  --card: #fffdf8;
+  --banner: #7a1f1f;
+  --banner-ink: #fff8f2;
+  --accent: #1f4d3a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 16px/1.5 "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.banner {
+  margin: 0;
+  padding: 0.55rem 1.25rem;
+  background: var(--banner);
+  color: var(--banner-ink);
+  font-weight: 650;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.8rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+
+.brand {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+nav a {
+  margin-left: 0.9rem;
+  color: var(--accent);
+}
+
+main { padding: 1.25rem; max-width: 64rem; }
+
+h1 { margin: 0 0 0.4rem; font-size: 1.7rem; }
+h2 { margin: 1.4rem 0 0.5rem; font-size: 1.15rem; }
+h3 { margin: 0 0 0.3rem; font-size: 1rem; }
+
+.lede, p { color: var(--muted); }
+h1, h2, h3, .state, button { color: var(--ink); }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.card, .record {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  text-decoration: none;
+}
+
+.record { margin-bottom: 0.8rem; }
+.record p, .card p { margin: 0.3rem 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+}
+
+th, td {
+  text-align: left;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.state {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f3eee4;
+  font-size: 0.85rem;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
+  margin: 0.5rem 0;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+input, select, button {
+  font: inherit;
+  padding: 0.35rem 0.45rem;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.error {
+  padding: 0.6rem 0.8rem;
+  background: #fff1f0;
+  border: 1px solid #e7b2ad;
+  color: #6d1a1a;
+}

@@ -1,0 +1,6 @@
+score,expected_state,expected_score,test_case,requirement
+79.99,Failed,79.99,TC-INT-010,REQ-INT-004
+80.00,Passed,80.00,TC-INT-008,REQ-INT-004
+80.01,Passed,80.01,TC-INT-009,REQ-INT-004
+79.994,Failed,79.99,TC-INT-007,REQ-INT-003
+79.995,Passed,80.00,TC-INT-007,REQ-INT-003

@@ -1,0 +1,25 @@
+id: TC-TRI-024
+title: "A rejection without a reason is rejected, and the status stays WAPPR"
+simulated: true
+system_under_test: package-sim
+milestone: M7
+status: Accepted
+source: ai-draft
+reviewed_by: "Lab reviewer"
+proposal_id: REQ-TRI-002-02
+requirement_ids:
+  - REQ-TRI-002
+acceptance_criteria:
+  - REQ-TRI-002 AC-4
+technique: negative
+priority: Medium
+automation_intent: not-executable
+steps:
+  - "A rejection without a reason is rejected, and the status stays `WAPPR`."
+expected_results:
+  - "A rejection without a reason is rejected, and the status stays `WAPPR`."
+why: "REQ-TRI-002 AC-4 is not cited by an existing case."
+known_sut_differences: []
+execution:
+  automated: false
+  result: not-run

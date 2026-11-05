@@ -1,0 +1,14 @@
+proposal_id: REQ-TRI-002-01
+title: "An approver rejecting a WAPPR request with a reason sets status CAN and stores the reason"
+technique: state-transition
+steps:
+  - "An approver rejecting a `WAPPR` request with a reason sets status `CAN` and stores the reason."
+expected:
+  - "An approver rejecting a `WAPPR` request with a reason sets status `CAN` and stores the reason."
+why: "REQ-TRI-002 AC-3 is not cited by an existing case."
+requirement: REQ-TRI-002
+criterion: REQ-TRI-002 AC-3
+source: ai-draft
+status: rejected
+reviewed_by: "Lab reviewer"
+rejection_reason: "Existing cases already record that CAN is not a simulator state. Do not add a case that expects CAN."

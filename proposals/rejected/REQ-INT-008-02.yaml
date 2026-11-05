@@ -1,0 +1,14 @@
+proposal_id: REQ-INT-008-02
+title: "PATCH of the note field with write scope stores the note and leaves score, completion"
+technique: state-transition
+steps:
+  - "`PATCH` of the note field with write scope stores the note and leaves score, completion time, and certificate identifier unchanged."
+expected:
+  - "`PATCH` of the note field with write scope stores the note and leaves score, completion time, and certificate identifier unchanged."
+why: "REQ-INT-008 AC-4 is not cited by an existing case."
+requirement: REQ-INT-008
+criterion: REQ-INT-008 AC-4
+source: ai-draft
+status: rejected
+reviewed_by: "Lab reviewer"
+rejection_reason: "TC-INT-018 already records that PATCH of a note is not implemented and must not be treated as a pass."

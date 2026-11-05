@@ -1,0 +1,1216 @@
+{
+  "info": {
+    "name": "Package Sim Work Orders",
+    "description": "Work-order API regression. SIMULATED \u2013 Not affiliated with Intellum, Verint, IBM TRIRIGA, or IBM Maximo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:18765"
+    },
+    {
+      "key": "enrollmentId",
+      "value": ""
+    },
+    {
+      "key": "thresholdEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "earlyEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "certificateId",
+      "value": ""
+    },
+    {
+      "key": "boundaryEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "evalDisputeId",
+      "value": ""
+    },
+    {
+      "key": "boundaryEvaluationId",
+      "value": ""
+    },
+    {
+      "key": "newOrderId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/health"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Health reports the simulated service\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.status).to.eql(\"ok\");",
+                  "    pm.expect(body.simulated).to.eql(true);",
+                  "    pm.expect(body.service).to.eql(\"package-sim\");",
+                  "    pm.expect(pm.response.headers.get(\"X-Simulated\")).to.eql(\"true\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset seed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/test/reset"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Reset reloads the seed\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.status).to.eql(\"reset\");",
+                  "    pm.expect(body.simulated).to.eql(true);",
+                  "    pm.expect(pm.response.headers.get(\"X-Simulated\")).to.eql(\"true\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disable inactive_assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/defects/inactive_assignment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"enabled\": false}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const forced = String(pm.environment.get(\"forceDefects\") || \"\").toLowerCase() === \"true\";",
+                  "if (forced) {",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Disable inactive_assignment so the M1 rule is under test\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"inactive_assignment\");",
+                  "    pm.expect(body.enabled).to.eql(false);",
+                  "    pm.expect(body.requirement).to.eql(\"REQ-TRI-004\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disable invalid_completion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/defects/invalid_completion",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"enabled\": false}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const forced = String(pm.environment.get(\"forceDefects\") || \"\").toLowerCase() === \"true\";",
+                  "if (forced) {",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Disable invalid_completion so the M1 rule is under test\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"invalid_completion\");",
+                  "    pm.expect(body.enabled).to.eql(false);",
+                  "    pm.expect(body.requirement).to.eql(\"REQ-TRI-008\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disable reopen_closed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/defects/reopen_closed",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"enabled\": false}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const forced = String(pm.environment.get(\"forceDefects\") || \"\").toLowerCase() === \"true\";",
+                  "if (forced) {",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Disable reopen_closed so the M1 rule is under test\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"reopen_closed\");",
+                  "    pm.expect(body.enabled).to.eql(false);",
+                  "    pm.expect(body.requirement).to.eql(\"REQ-TRI-009\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Workflow",
+      "item": [
+        {
+          "name": "TC-TRI-001 Reject a request missing a title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\": \" \", \"requester_id\": \"RQ-01\", \"building\": \"HQ\", \"request_class\": \"Electrical\", \"description\": \"Lamp is out.\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-001 REQ-TRI-001 a blank title is rejected\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Required fields missing\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-002 Create a service request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\": \"Replace simulated lamp\", \"requester_id\": \"RQ-01\", \"building\": \"HQ\", \"request_class\": \"Electrical\", \"description\": \"Lamp is out.\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-002 REQ-TRI-001 a complete request is saved as Draft\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body).to.include.keys(\"id\", \"title\", \"requester_id\", \"building\", \"request_class\", \"description\", \"state\", \"technician_id\");",
+                  "    pm.expect(body.state).to.eql(\"Draft\");",
+                  "    pm.expect(body.technician_id).to.eql(null);",
+                  "    pm.expect(body.title).to.eql(\"Replace simulated lamp\");",
+                  "    pm.collectionVariables.set(\"newOrderId\", body.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-002 Submit the request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/{{newOrderId}}/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"WAPPR\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-002 REQ-TRI-001 the request moves to WAPPR\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(pm.collectionVariables.get(\"newOrderId\"));",
+                  "    pm.expect(body.state).to.eql(\"WAPPR\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-003 Reject self-approval",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-02/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"APPR\", \"actor_id\": \"RQ-02\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-003 REQ-TRI-002 the requester cannot approve their own request\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"cannot approve their own request\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-004 Approve as a different person",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-02/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"APPR\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-004 REQ-TRI-002 a different person can approve\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"WO-02\");",
+                  "    pm.expect(body.state).to.eql(\"APPR\");",
+                  "    pm.expect(body.approved_by).to.eql(\"AP-01\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-005 Reject a repeated approval",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-02/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"APPR\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-005 REQ-TRI-003 approving again does not create another order\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"APPR -> APPR\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-006 Read orders after approval",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-005 REQ-TRI-003 TC-TRI-006 one approved order and the draft stays unassigned\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const rows = pm.response.json();",
+                  "    const approved = rows.filter((row) => row.id === \"WO-02\");",
+                  "    pm.expect(approved).to.have.lengthOf(1);",
+                  "    pm.expect(approved[0].state).to.eql(\"APPR\");",
+                  "    const draft = rows.find((row) => row.id === \"WO-01\");",
+                  "    pm.expect(draft.state).to.eql(\"Draft\");",
+                  "    pm.expect(draft.technician_id).to.eql(null);",
+                  "    const created = rows.find((row) => row.id === pm.collectionVariables.get(\"newOrderId\"));",
+                  "    pm.expect(created.state).to.eql(\"WAPPR\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-010 Reject start without a technician",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-02/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"INPRG\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-010 REQ-TRI-005 start without a technician is rejected\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"without an assigned technician\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-008 Reject an inactive technician",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-03/assign",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"technician_id\": \"TEC-02\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-008 REQ-TRI-004 an inactive technician is rejected\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"inactive technician\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-008 Read WO-03 after the inactive assignment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-008 REQ-TRI-004 WO-03 stays unassigned\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const order = pm.response.json().find((row) => row.id === \"WO-03\");",
+                  "    pm.expect(order.state).to.eql(\"APPR\");",
+                  "    pm.expect(order.technician_id).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-007 Assign an active technician",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-03/assign",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"technician_id\": \"TEC-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-007 REQ-TRI-004 an active technician is assigned without starting\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"WO-03\");",
+                  "    pm.expect(body.state).to.eql(\"APPR\");",
+                  "    pm.expect(body.technician_id).to.eql(\"TEC-01\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-009 Start assigned work",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-03/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"INPRG\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-009 REQ-TRI-005 assigned work moves to INPRG\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"INPRG\");",
+                  "    pm.expect(body.technician_id).to.eql(\"TEC-01\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-017 Reject completion from WMATL",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-06/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"COMP\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-017 REQ-TRI-008 WMATL cannot complete\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"WMATL -> COMP\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-014 Reject a zero material quantity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-06/materials",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"item_id\": \"FILTER\", \"quantity\": 0}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-014 REQ-TRI-007 a zero quantity is rejected\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Quantity must be greater than 0\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-013 Record a material quantity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-06/materials",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"item_id\": \"FILTER\", \"quantity\": 1}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-013 REQ-TRI-007 material is stored and the state stays WMATL\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"WMATL\");",
+                  "    pm.expect(body.material_entries).to.have.lengthOf(1);",
+                  "    pm.expect(body.material_entries[0].item_id).to.eql(\"FILTER\");",
+                  "    pm.expect(body.material_entries[0].quantity).to.be.closeTo(1, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-015 Resume after waiting for material",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-06/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"INPRG\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-015 REQ-TRI-007 resume keeps the material line\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"INPRG\");",
+                  "    pm.expect(body.material_entries).to.have.lengthOf(1);",
+                  "    pm.expect(body.material_entries[0].item_id).to.eql(\"FILTER\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-020 Reject closure from INPRG",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-05/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"CLOSE\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-020 REQ-TRI-009 INPRG cannot close\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"INPRG -> CLOSE\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-017 Reject completion from APPR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-10/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"COMP\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-017 REQ-TRI-008 APPR cannot complete\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"APPR -> COMP\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-016 Complete in-progress work",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-05/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"COMP\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-016 REQ-TRI-008 INPRG can complete\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"WO-05\");",
+                  "    pm.expect(body.state).to.eql(\"COMP\");",
+                  "    pm.expect(body.completed_at).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-019 Close completed work",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-05/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"CLOSE\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-019 REQ-TRI-009 COMP can close\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"CLOSE\");",
+                  "    pm.expect(body.closed_at).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(body.completed_at).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-023 Reject rework without a reason",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-07/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"INPRG\", \"actor_id\": \"AP-01\", \"reason\": \"\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-023 REQ-TRI-010 rework requires a reason\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Rework requires a reason\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-022 Rework completed work",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-07/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"INPRG\", \"actor_id\": \"AP-01\", \"reason\": \"Rail still moves\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-TRI-022 REQ-TRI-010 rework returns to INPRG and keeps actuals\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"INPRG\");",
+                  "    pm.expect(body.rejection_reason).to.eql(\"Rail still moves\");",
+                  "    pm.expect(body.completed_at).to.eql(null);",
+                  "    pm.expect(body.time_entries).to.have.lengthOf(1);",
+                  "    pm.expect(body.time_entries[0].hours).to.be.closeTo(0.5, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-012 Reject time on a closed order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-08/time",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"technician_id\": \"TEC-01\", \"hours\": 1}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-012 REQ-TRI-006 time on a closed order is rejected\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Illegal actuals while CLOSE\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TRI-021 Reject reopen of a closed order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-08/transition",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"to\": \"INPRG\", \"actor_id\": \"AP-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TRI-021 REQ-TRI-009 a closed order stays closed\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"CLOSE -> INPRG\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.info.iteration > 0) {",
+              "    pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Work hour boundaries",
+      "item": [
+        {
+          "name": "TC-TRI-011 Record boundary hours",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/work/orders/WO-04/time",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"technician_id\": \"TEC-01\", \"hours\": {{hours}}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expected = Number(pm.iterationData.get(\"expected_status\"));",
+                  "const hours = Number(pm.iterationData.get(\"hours\"));",
+                  "const testCase = pm.iterationData.get(\"test_case\");",
+                  "const requirement = pm.iterationData.get(\"requirement\");",
+                  "pm.test(testCase + \" \" + requirement + \" work hours boundary\", function () {",
+                  "    pm.response.to.have.status(expected);",
+                  "    if (expected === 200) {",
+                  "        const body = pm.response.json();",
+                  "        pm.expect(body.id).to.eql(\"WO-04\");",
+                  "        pm.expect(body.state).to.eql(\"APPR\");",
+                  "        const entry = body.time_entries[body.time_entries.length - 1];",
+                  "        pm.expect(entry.technician_id).to.eql(\"TEC-01\");",
+                  "        pm.expect(entry.hours).to.be.closeTo(hours, 0.001);",
+                  "    }",
+                  "    if (expected === 422 && hours > 0) {",
+                  "        pm.expect(pm.response.json().detail).to.include(\"Hours must be\");",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const hours = pm.iterationData.get(\"hours\");",
+              "if (hours === undefined || hours === null || hours === \"\") {",
+              "    pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

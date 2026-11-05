@@ -1,0 +1,32 @@
+id: TC-VER-012
+title: Reject a dispute that has no comment
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-007
+acceptance_criteria:
+  - REQ-VER-007 AC-3
+  - REQ-VER-007 AC-5
+technique: Negative Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-05
+objective: An empty comment is invalid. A pending evaluation cannot be disputed.
+preconditions:
+  - POST /test/reset. EV-02 is Under Review. EV-01 is Pending.
+defect_switches:
+  []
+steps:
+  - POST dispute on EV-02 with comment made only of spaces.
+  - POST dispute on EV-01 with a real comment.
+expected_results:
+  - EV-02 returns HTTP 422 and stays Under Review.
+  - EV-01 returns HTTP 409 and stays Pending.
+known_sut_differences:
+  - The evaluated employee and a reviewer are not separate actors on the dispute route.
+execution:
+  automated: false
+  result: not-run

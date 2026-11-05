@@ -1,0 +1,37 @@
+id: TC-TRI-022
+title: Return completed work for rework and keep actuals
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-010
+acceptance_criteria:
+  - REQ-TRI-010 AC-1
+  - REQ-TRI-010 AC-2
+  - REQ-TRI-010 AC-4
+  - REQ-TRI-010 AC-5
+technique: State Transition Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-08
+objective: COMP to INPRG with a reason clears completion and keeps time. A later COMP can be submitted again.
+preconditions:
+  - POST /test/reset. WO-07 is COMP and has a 0.5 hour time line.
+defect_switches:
+  []
+steps:
+  - POST WO-07 transition to INPRG with reason Rail still moves.
+  - POST WO-07 transition to COMP.
+expected_results:
+  - The rework returns HTTP 200, state INPRG, completed_at empty, and rejection_reason Rail still moves.
+  - The 0.5 hour line is still present.
+  - state is not CLOSE and closed_at is empty.
+  - The new completion returns HTTP 200, state COMP, and a new completed_at.
+  - The 0.5 hour line is still present after that completion.
+known_sut_differences:
+  - This transition is the approved M1 difference from the Maximo table. The case expects it.
+execution:
+  automated: false
+  result: not-run

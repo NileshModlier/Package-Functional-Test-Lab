@@ -1,0 +1,25 @@
+id: TC-INT-022
+title: "Unanswered questions contribute 0 points and still count in the possible points"
+simulated: true
+system_under_test: package-sim
+milestone: M7
+status: Accepted
+source: ai-draft
+reviewed_by: "Lab reviewer"
+proposal_id: REQ-INT-003-01
+requirement_ids:
+  - REQ-INT-003
+acceptance_criteria:
+  - REQ-INT-003 AC-2
+technique: exploratory
+priority: Medium
+automation_intent: not-executable
+steps:
+  - "Unanswered questions contribute 0 points and still count in the possible points."
+expected_results:
+  - "Unanswered questions contribute 0 points and still count in the possible points."
+why: "REQ-INT-003 AC-2 is not cited by an existing case."
+known_sut_differences: []
+execution:
+  automated: false
+  result: not-run

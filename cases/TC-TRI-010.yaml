@@ -1,0 +1,31 @@
+id: TC-TRI-010
+title: Reject start when no technician is assigned
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-005
+acceptance_criteria:
+  - REQ-TRI-005 AC-3
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-07
+objective: An unassigned approved order cannot enter INPRG.
+preconditions:
+  - POST /test/reset. WO-03 is APPR and technician_id is empty.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders/WO-03/transition with to INPRG.
+expected_results:
+  - The response is HTTP 409.
+  - The detail names APPR to INPRG without an assigned technician.
+  - state stays APPR.
+known_sut_differences:
+  - The simulator does not check a supervisor role separately from the assigned technician.
+execution:
+  automated: false
+  result: not-run

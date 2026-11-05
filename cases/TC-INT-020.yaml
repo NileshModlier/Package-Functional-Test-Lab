@@ -1,0 +1,30 @@
+id: TC-INT-020
+title: Reject an unknown enrollment id
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-009
+acceptance_criteria:
+  - REQ-INT-009 AC-5
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-10
+objective: An unknown id returns an error and does not disclose another learner.
+preconditions:
+  - POST /test/reset.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments/ENR-99/start.
+expected_results:
+  - The response is HTTP 404.
+  - The body does not contain LN-01 through LN-05 enrollment payloads.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

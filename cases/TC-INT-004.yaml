@@ -1,0 +1,34 @@
+id: TC-INT-004
+title: Start an ordered path and mark content modules complete
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-002
+acceptance_criteria:
+  - REQ-INT-002 AC-1
+  - REQ-INT-002 AC-2
+  - REQ-INT-002 AC-5
+technique: State Transition Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-05
+objective: Enrolled moves to In Progress, and content modules complete before the assessment module.
+preconditions:
+  - POST /test/reset. ENR-04 is Enrolled on ACT-101.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments/ENR-04/start.
+expected_results:
+  - The response is HTTP 200.
+  - state is In Progress.
+  - MOD-1 and MOD-2 status is Complete.
+  - MOD-3, the assessment module, stays Not started.
+known_sut_differences:
+  - The simulator completes every content module on start. It does not expose a separate call per module.
+execution:
+  automated: false
+  result: not-run

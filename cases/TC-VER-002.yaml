@@ -1,0 +1,30 @@
+id: TC-VER-002
+title: Reject an evaluation for an unknown interaction
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-001
+acceptance_criteria:
+  - REQ-VER-001 AC-3
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-01
+objective: No interaction means no evaluation.
+preconditions:
+  - POST /test/reset. Record the evaluation count.
+defect_switches:
+  []
+steps:
+  - POST /api/quality/evaluations with interaction_id INT-99.
+expected_results:
+  - The response is HTTP 404.
+  - The evaluation count stays 5.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

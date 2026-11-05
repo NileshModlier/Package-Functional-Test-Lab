@@ -1,0 +1,35 @@
+id: TC-INT-013
+title: Stop a fourth assessment after three failures
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-005
+acceptance_criteria:
+  - REQ-INT-005 AC-4
+technique: Negative Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-07
+objective: Three failed attempts exhaust the activity. Another submit is rejected.
+preconditions:
+  - POST /test/reset.
+defect_switches:
+  []
+steps:
+  - Enroll LN-01 in ACT-102 and start.
+  - Submit score 10, reset, and start. Repeat until three Failed outcomes are stored.
+  - POST reset on that enrollment.
+  - POST assessment with score 10.
+expected_results:
+  - After the third failure, attempts is 3 and state is Failed.
+  - Reset returns HTTP 409 and the detail says attempts are exhausted.
+  - The assessment returns HTTP 409 because the state is Failed.
+  - attempt_history length stays 3.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

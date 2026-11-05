@@ -1,0 +1,31 @@
+id: TC-TRI-018
+title: Allow APPR to COMP only when the completion defect is on
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-008
+acceptance_criteria:
+  - REQ-TRI-008 AC-3
+technique: Decision Table Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-TRI-07
+objective: The switch adds one illegal completion. It does not add INPRG to CLOSE.
+preconditions:
+  - POST /test/reset before the APPR row. WO-10 is APPR. WO-09 is INPRG.
+defect_switches:
+  - Set invalid_completion true for the APPR row.
+steps:
+  - POST WO-10 transition to COMP.
+  - POST WO-09 transition to CLOSE.
+expected_results:
+  - WO-10 returns HTTP 200 and state COMP.
+  - WO-09 returns HTTP 409 and stays INPRG.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

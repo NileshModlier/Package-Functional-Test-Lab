@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Learning</h1>
+<p>States: Available (catalog), Enrolled, In Progress, Passed, Failed, Completed.</p>
+
+<h2>Catalog</h2>
+<table>
+  <thead>
+    <tr><th>ID</th><th>Title</th><th>Status</th><th>Modules</th></tr>
+  </thead>
+  <tbody>
+    {% for activity in activities %}
+    <tr data-testid="activity-{{ activity.id }}">
+      <td>{{ activity.id }}</td>
+      <td>{{ activity.title }}</td>
+      <td><span class="state" data-testid="activity-status">{{ activity.status }}</span></td>
+      <td>{% for module in activity.modules %}{{ module.title }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Enroll</h2>
+<form method="post" action="/ui/learning/enroll" data-testid="enroll-form">
+  <label>Learner
+    <select name="learner_id" data-testid="enroll-learner">
+      {% for learner in learners %}<option value="{{ learner.id }}">{{ learner.id }} {{ learner.name }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Activity
+    <select name="activity_id" data-testid="enroll-activity">
+      {% for activity in activities %}<option value="{{ activity.id }}">{{ activity.id }} {{ activity.title }}</option>{% endfor %}
+    </select>
+  </label>
+  <button type="submit" data-testid="enroll-submit">Enroll</button>
+</form>
+
+<h2>Enrollments</h2>
+{% for enrollment in enrollments %}
+<article class="record" data-testid="enrollment-{{ enrollment.id }}">
+  <h3>{{ enrollment.id }} <span class="state" data-testid="state">{{ enrollment.state }}</span></h3>
+  <p data-testid="summary">Learner {{ enrollment.learner_id }} · Activity {{ enrollment.activity_id }} · Score {{ enrollment.score if enrollment.score is not none else "—" }} · Attempts {{ enrollment.attempts }}</p>
+  <ul>
+    {% for module in enrollment.modules %}
+    <li data-testid="module-{{ module.id }}">{{ module.title }} ({{ module.kind }}) — {{ module.status }}</li>
+    {% endfor %}
+  </ul>
+  {% if enrollment.certificate_id %}<p data-testid="certificate">Certificate {{ enrollment.certificate_id }}</p>{% endif %}
+  {% if enrollment.state == "Enrolled" %}
+  <form method="post" action="/ui/learning/enrollments/{{ enrollment.id }}/start"><button type="submit" data-testid="start">Start</button></form>
+  {% elif enrollment.state == "In Progress" %}
+  <form method="post" action="/ui/learning/enrollments/{{ enrollment.id }}/assessment">
+    <label>Assessment score <input name="score" data-testid="score" type="number" min="0" max="100" step="0.01" value="80" required></label>
+    <button type="submit" data-testid="score-submit">Submit assessment</button>
+  </form>
+  {% elif enrollment.state == "Passed" %}
+  <form method="post" action="/ui/learning/enrollments/{{ enrollment.id }}/complete"><button type="submit" data-testid="complete">Complete</button></form>
+  {% endif %}
+</article>
+{% endfor %}
+
+<h2>Certificates</h2>
+<table>
+  <thead><tr><th>ID</th><th>Learner</th><th>Issued</th><th>Completed</th><th>Score</th></tr></thead>
+  <tbody>
+    {% for certificate in certificates %}
+    <tr data-testid="certificate-row-{{ certificate.id }}">
+      <td>{{ certificate.id }}</td>
+      <td data-testid="certificate-learner">{{ certificate.learner_id }}</td>
+      <td data-testid="certificate-issued">{{ certificate.issued_on }}</td>
+      <td data-testid="certificate-completed">{{ certificate.completion_date }}</td>
+      <td>{{ certificate.score }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

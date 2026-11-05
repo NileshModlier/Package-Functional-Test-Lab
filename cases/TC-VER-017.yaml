@@ -1,0 +1,25 @@
+id: TC-VER-017
+title: "A second in-progress evaluation of the same interaction by the same evaluator and form"
+simulated: true
+system_under_test: package-sim
+milestone: M7
+status: Accepted
+source: ai-draft
+reviewed_by: "Lab reviewer"
+proposal_id: REQ-VER-001-01
+requirement_ids:
+  - REQ-VER-001
+acceptance_criteria:
+  - REQ-VER-001 AC-4
+technique: negative
+priority: Medium
+automation_intent: not-executable
+steps:
+  - "A second in-progress evaluation of the same interaction by the same evaluator and form is rejected."
+expected_results:
+  - "A second in-progress evaluation of the same interaction by the same evaluator and form is rejected."
+why: "REQ-VER-001 AC-4 is not cited by an existing case."
+known_sut_differences: []
+execution:
+  automated: false
+  result: not-run

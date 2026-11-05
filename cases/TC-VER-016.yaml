@@ -1,0 +1,39 @@
+id: TC-VER-016
+title: Explore dispute, acknowledgement, and coaching together
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-006
+  - REQ-VER-007
+  - REQ-VER-008
+acceptance_criteria:
+  - REQ-VER-006 AC-3
+  - REQ-VER-007 AC-5
+  - REQ-VER-008 AC-2
+technique: Exploratory Testing
+priority: High
+automation_intent: manual-exploratory
+assumption_ids:
+  - ASM-VER-04
+  - ASM-VER-05
+  - ASM-VER-06
+objective: "Charter: dispute one result, then try to acknowledge or coach before it is resolved."
+preconditions:
+  - POST /test/reset. Time box 30 minutes.
+defect_switches:
+  []
+steps:
+  - From the quality page, dispute EV-02, then try acknowledge, coach, and complete without resolving.
+  - Resolve it and continue through coaching.
+  - Watch whether the score or classification changes.
+expected_results:
+  - Actions the state table rejects stay rejected.
+  - The score does not change because coaching or acknowledgement happened.
+  - Notes cite the requirement used as the oracle.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

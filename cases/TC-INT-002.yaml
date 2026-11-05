@@ -1,0 +1,33 @@
+id: TC-INT-002
+title: Reject a duplicate active enrollment
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-001
+acceptance_criteria:
+  - REQ-INT-001 AC-3
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-02
+objective: A second active enrollment for the same learner and activity is rejected.
+preconditions:
+  - POST /test/reset. ENR-04 is LN-04 enrolled in ACT-101.
+defect_switches:
+  []
+steps:
+  - Record the enrollment count.
+  - POST /api/learning/enrollments with learner_id LN-04 and activity_id ACT-101.
+  - GET /api/learning/enrollments.
+expected_results:
+  - The response is HTTP 409.
+  - The detail says an active enrollment already exists.
+  - The enrollment count is unchanged and ENR-04 is still Enrolled.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

@@ -1,0 +1,34 @@
+id: TC-INT-014
+title: Complete a passed enrollment once
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-006
+acceptance_criteria:
+  - REQ-INT-006 AC-1
+  - REQ-INT-006 AC-2
+technique: State Transition Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-INT-08
+objective: Passed is the only predecessor of Completed, and the completion date is written once.
+preconditions:
+  - POST /test/reset. ENR-02 is Passed.
+defect_switches:
+  - Set certificate_date to false so the certificate date does not confound this case.
+steps:
+  - POST /api/learning/enrollments/ENR-02/complete.
+  - Read completion_date.
+  - POST complete on ENR-02 again.
+expected_results:
+  - The first response is HTTP 200 and state is Completed.
+  - completion_date is a single date.
+  - The second response is HTTP 409 and completion_date is unchanged.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

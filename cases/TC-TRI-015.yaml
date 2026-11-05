@@ -1,0 +1,34 @@
+id: TC-TRI-015
+title: Wait for material and resume without losing lines
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-007
+acceptance_criteria:
+  - REQ-TRI-007 AC-3
+  - REQ-TRI-007 AC-4
+technique: State Transition Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-07
+objective: INPRG can move to WMATL and back. CLOSE cannot take a material line.
+preconditions:
+  - POST /test/reset. WO-05 is INPRG and already has one material line. WO-08 is CLOSE.
+defect_switches:
+  []
+steps:
+  - POST WO-05 transition to WMATL.
+  - POST WO-05 transition to INPRG.
+  - POST a material line on WO-08.
+expected_results:
+  - WO-05 becomes WMATL, then returns to INPRG.
+  - The original carpet material line is still present.
+  - WO-08 returns HTTP 409 and gains no material line.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

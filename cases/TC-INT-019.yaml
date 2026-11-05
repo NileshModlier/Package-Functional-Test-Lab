@@ -1,0 +1,33 @@
+id: TC-INT-019
+title: Read enrollment outcome fields
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-009
+acceptance_criteria:
+  - REQ-INT-009 AC-1
+  - REQ-INT-009 AC-2
+  - REQ-INT-009 AC-3
+technique: Equivalence Partitioning
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-10
+objective: The collection read returns status, score, completion, certificate, and attempt history.
+preconditions:
+  - POST /test/reset. ENR-05 is Completed with certificate SIM-CERT-SAFE-2026-01. ENR-03 is Failed and retains history.
+defect_switches:
+  []
+steps:
+  - GET /api/learning/enrollments.
+expected_results:
+  - ENR-05 shows state Completed, score 92.0, completion_date 2026-04-01, and certificate_id SIM-CERT-SAFE-2026-01.
+  - ENR-03 shows state Failed, score 79.99, and one attempt_history row.
+  - Each row includes learner_id and activity_id.
+known_sut_differences:
+  - There is no separate /assessment-responses route. Attempt history is on the enrollment. Write-only scope is not enforced.
+execution:
+  automated: false
+  result: not-run

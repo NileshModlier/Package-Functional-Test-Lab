@@ -1,0 +1,34 @@
+id: TC-TRI-002
+title: Submit a complete request to WAPPR
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-001
+acceptance_criteria:
+  - REQ-TRI-001 AC-2
+  - REQ-TRI-001 AC-4
+technique: State Transition Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-01
+  - ASM-TRI-02
+objective: Draft is the saved request. WAPPR is the submitted request. There is still one record.
+preconditions:
+  - POST /test/reset.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders with title, requester_id RQ-09, building HQ, request_class General, and a description.
+  - POST transition on that id with to WAPPR.
+expected_results:
+  - Create returns HTTP 200 and state Draft.
+  - The transition returns HTTP 200 and state WAPPR.
+  - The id does not change and no second work order is created by the submit.
+known_sut_differences:
+  - "submitted time is not a stored field. M1's separate task is the same work-order record."
+execution:
+  automated: false
+  result: not-run

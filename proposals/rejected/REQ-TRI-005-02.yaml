@@ -1,0 +1,14 @@
+proposal_id: REQ-TRI-005-02
+title: "Starting a task that is already INPRG leaves started_at unchanged"
+technique: state-transition
+steps:
+  - "Starting a task that is already `INPRG` leaves `started_at` unchanged."
+expected:
+  - "Starting a task that is already `INPRG` leaves `started_at` unchanged."
+why: "REQ-TRI-005 AC-4 is not cited by an existing case."
+requirement: REQ-TRI-005
+criterion: REQ-TRI-005 AC-4
+source: ai-draft
+status: rejected
+reviewed_by: "Lab reviewer"
+rejection_reason: "TC-TRI-009 already records that started_at is not stored. A case that expects started_at cannot be checked on this build."

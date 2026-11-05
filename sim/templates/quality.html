@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Quality</h1>
+<p>States: Pending, Under Review, Coached, Acknowledged, Disputed, Completed.</p>
+<h2>Interactions</h2>
+<table>
+  <thead><tr><th>ID</th><th>Channel</th><th>Agent</th><th>Summary</th></tr></thead>
+  <tbody>
+    {% for item in interactions %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.channel }}</td>
+      <td>{{ item.agent_name }}</td>
+      <td>{{ item.summary }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h2>Evaluations</h2>
+{% for evaluation in evaluations %}
+<article class="record" data-testid="evaluation-{{ evaluation.id }}">
+  <h3>{{ evaluation.id }} <span class="state" data-testid="state">{{ evaluation.state }}</span></h3>
+  <p data-testid="summary">{{ evaluation.agent_name }} · {{ evaluation.interaction_id }} · Score {{ evaluation.score if evaluation.score is not none else "—" }} · {{ evaluation.classification or "Not classified" }}</p>
+  {% if evaluation.state == "Pending" %}
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/submit">
+    <label>Section A earned of 2 <input name="earned_a" data-testid="earned-a" type="number" min="0" max="2" step="any" value="1" required></label>
+    <label>Section B earned of 1 <input name="earned_b" data-testid="earned-b" type="number" min="0" max="1" step="any" value="1" required></label>
+    <label>Section C earned of 1 <input name="earned_c" data-testid="earned-c" type="number" min="0" max="1" step="any" value="1" required></label>
+    <button type="submit" data-testid="submit">Submit</button>
+  </form>
+  {% elif evaluation.state == "Under Review" %}
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/acknowledge"><button type="submit" data-testid="acknowledge">Acknowledge</button></form>
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/dispute">
+    <label>Dispute comment <input name="comment" data-testid="dispute-comment" required></label>
+    <button type="submit" data-testid="dispute">Dispute</button>
+  </form>
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/coach">
+    <label>Coaching note <input name="note" data-testid="coach-note" required></label>
+    <button type="submit" data-testid="coach">Coach</button>
+  </form>
+  {% elif evaluation.state == "Acknowledged" %}
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/coach">
+    <label>Coaching note <input name="note" data-testid="coach-note" required></label>
+    <button type="submit" data-testid="coach">Coach</button>
+  </form>
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/complete"><button type="submit" data-testid="complete">Complete</button></form>
+  {% elif evaluation.state == "Coached" %}
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/acknowledge"><button type="submit" data-testid="acknowledge">Acknowledge</button></form>
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/complete"><button type="submit" data-testid="complete">Complete</button></form>
+  {% elif evaluation.state == "Disputed" %}
+  <p data-testid="dispute-text">Dispute: {{ evaluation.dispute_comment }}</p>
+  <form method="post" action="/ui/quality/evaluations/{{ evaluation.id }}/resolve"><button type="submit" data-testid="resolve">Resolve</button></form>
+  {% endif %}
+</article>
+{% endfor %}
+{% endblock %}

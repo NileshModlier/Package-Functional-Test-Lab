@@ -1,0 +1,32 @@
+id: TC-TRI-017
+title: Reject completion from WMATL and from APPR
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-008
+acceptance_criteria:
+  - REQ-TRI-008 AC-3
+technique: Negative Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-TRI-07
+objective: With the planted completion defect off, COMP is reached only from INPRG.
+preconditions:
+  - POST /test/reset. WO-06 is WMATL. WO-10 is APPR.
+defect_switches:
+  - Set invalid_completion to false.
+steps:
+  - POST WO-06 transition to COMP.
+  - POST WO-10 transition to COMP.
+expected_results:
+  - Both responses are HTTP 409.
+  - WO-06 stays WMATL and WO-10 stays APPR.
+  - completed_at stays empty on both.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

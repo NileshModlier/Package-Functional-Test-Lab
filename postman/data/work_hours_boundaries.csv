@@ -1,0 +1,5 @@
+hours,expected_status,test_case,requirement
+0,422,TC-TRI-012,REQ-TRI-006
+0.01,200,TC-TRI-011,REQ-TRI-006
+24,200,TC-TRI-011,REQ-TRI-006
+24.01,422,TC-TRI-012,REQ-TRI-006

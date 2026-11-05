@@ -1,0 +1,25 @@
+id: TC-TRI-025
+title: "A supervisor may start the task for the assigned resource, with the same result"
+simulated: true
+system_under_test: package-sim
+milestone: M7
+status: Accepted
+source: ai-draft
+reviewed_by: "Lab reviewer"
+proposal_id: REQ-TRI-005-01
+requirement_ids:
+  - REQ-TRI-005
+acceptance_criteria:
+  - REQ-TRI-005 AC-2
+technique: exploratory
+priority: Medium
+automation_intent: not-executable
+steps:
+  - "A supervisor may start the task for the assigned resource, with the same result."
+expected_results:
+  - "A supervisor may start the task for the assigned resource, with the same result."
+why: "REQ-TRI-005 AC-2 is not cited by an existing case."
+known_sut_differences: []
+execution:
+  automated: false
+  result: not-run

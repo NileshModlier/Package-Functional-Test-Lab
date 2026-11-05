@@ -1,0 +1,30 @@
+id: TC-VER-010
+title: Reject acknowledgement of an evaluation that is still pending
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-006
+acceptance_criteria:
+  - REQ-VER-006 AC-4
+technique: Negative Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-04
+objective: Pending has no score classification path to acknowledgement.
+preconditions:
+  - POST /test/reset. EV-01 is Pending.
+defect_switches:
+  []
+steps:
+  - POST /api/quality/evaluations/EV-01/acknowledge.
+expected_results:
+  - The response is HTTP 409.
+  - state stays Pending and acknowledged_at stays empty.
+known_sut_differences:
+  - A second acknowledgement of an already acknowledged evaluation returns HTTP 409 rather than leaving the original timestamp untouched. That M1 idempotent result is not the simulator behavior.
+execution:
+  automated: false
+  result: not-run

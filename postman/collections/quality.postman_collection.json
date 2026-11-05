@@ -1,0 +1,1040 @@
+{
+  "info": {
+    "name": "Package Sim Quality",
+    "description": "Quality API regression. SIMULATED \u2013 Not affiliated with Intellum, Verint, IBM TRIRIGA, or IBM Maximo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:18765"
+    },
+    {
+      "key": "enrollmentId",
+      "value": ""
+    },
+    {
+      "key": "thresholdEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "earlyEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "certificateId",
+      "value": ""
+    },
+    {
+      "key": "boundaryEnrollmentId",
+      "value": ""
+    },
+    {
+      "key": "evalDisputeId",
+      "value": ""
+    },
+    {
+      "key": "boundaryEvaluationId",
+      "value": ""
+    },
+    {
+      "key": "newOrderId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/health"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Health reports the simulated service\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.status).to.eql(\"ok\");",
+                  "    pm.expect(body.simulated).to.eql(true);",
+                  "    pm.expect(body.service).to.eql(\"package-sim\");",
+                  "    pm.expect(pm.response.headers.get(\"X-Simulated\")).to.eql(\"true\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset seed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/test/reset"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Reset reloads the seed\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.status).to.eql(\"reset\");",
+                  "    pm.expect(body.simulated).to.eql(true);",
+                  "    pm.expect(pm.response.headers.get(\"X-Simulated\")).to.eql(\"true\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disable quality_score",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/defects/quality_score",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"enabled\": false}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const forced = String(pm.environment.get(\"forceDefects\") || \"\").toLowerCase() === \"true\";",
+                  "if (forced) {",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"Disable quality_score so the M1 rule is under test\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"quality_score\");",
+                  "    pm.expect(body.enabled).to.eql(false);",
+                  "    pm.expect(body.requirement).to.eql(\"REQ-VER-003\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Workflow",
+      "item": [
+        {
+          "name": "TC-VER-001 Read interactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/interactions"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const rows = pm.response.json();",
+                  "pm.test(\"TC-VER-001 REQ-VER-001 interactions expose the recorded fields\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(rows.length).to.be.at.least(5);",
+                  "    pm.expect(rows[0]).to.include.keys(\"id\", \"channel\", \"agent_id\", \"agent_name\", \"summary\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-001 Create an evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-001 REQ-VER-001 a new evaluation is pending\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body).to.include.keys(\"id\", \"interaction_id\", \"agent_id\", \"state\", \"score\", \"classification\");",
+                  "    pm.expect(body.state).to.eql(\"Pending\");",
+                  "    pm.expect(body.interaction_id).to.eql(\"INT-01\");",
+                  "    pm.expect(body.score).to.eql(null);",
+                  "    pm.expect(body.classification).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-002 Reject an unknown interaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-99\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-002 REQ-VER-001 an unknown interaction is not found\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"INT-99\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-003 Create an evaluation for a partial submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-02\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-003 REQ-VER-002 partial evaluation is pending\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().state).to.eql(\"Pending\");",
+                  "    pm.collectionVariables.set(\"evalPartialId\", pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-003 Reject a submit that omits a section",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalPartialId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sections\": [{\"id\": \"A\", \"earned\": 1, \"possible\": 2}]}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-003 REQ-VER-002 sections A, B, and C are required\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Sections A, B, and C\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-004 Create an all-yes evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-03\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-004 REQ-VER-003 all-yes evaluation is pending\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.collectionVariables.set(\"evalAllYesId\", pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-004 Score all yes as 100",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalAllYesId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sections\": [{\"id\": \"A\", \"earned\": 2, \"possible\": 2}, {\"id\": \"B\", \"earned\": 1, \"possible\": 1}, {\"id\": \"C\", \"earned\": 1, \"possible\": 1}]}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-004 REQ-VER-003 all yes scores 100 and meets standard\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Under Review\");",
+                  "    pm.expect(body.score).to.be.closeTo(100, 0.001);",
+                  "    pm.expect(body.classification).to.eql(\"Meets standard\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-004 Create an all-no evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-04\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-004 REQ-VER-003 all-no evaluation is pending\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.collectionVariables.set(\"evalAllNoId\", pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-004 Score all no as 0",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalAllNoId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sections\": [{\"id\": \"A\", \"earned\": 0, \"possible\": 2}, {\"id\": \"B\", \"earned\": 0, \"possible\": 1}, {\"id\": \"C\", \"earned\": 0, \"possible\": 1}]}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-004 REQ-VER-003 all no scores 0 and is below standard\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.score).to.be.closeTo(0, 0.001);",
+                  "    pm.expect(body.classification).to.eql(\"Below standard\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-005 Score weighted sections as 70",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/EV-01/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sections\": [{\"id\": \"A\", \"earned\": 1, \"possible\": 2}, {\"id\": \"B\", \"earned\": 1, \"possible\": 1}, {\"id\": \"C\", \"earned\": 1, \"possible\": 1}]}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-005 REQ-VER-003 weighted score is 70 and below standard\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.id).to.eql(\"EV-01\");",
+                  "    pm.expect(body.state).to.eql(\"Under Review\");",
+                  "    pm.expect(body.score).to.be.closeTo(70, 0.001);",
+                  "    pm.expect(body.classification).to.eql(\"Below standard\");",
+                  "    pm.expect(body.sections).to.have.lengthOf(3);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-009 Acknowledge a scored evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/EV-02/acknowledge"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-009 REQ-VER-006 acknowledgement keeps the score\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Acknowledged\");",
+                  "    pm.expect(body.score).to.be.closeTo(70, 0.001);",
+                  "    pm.expect(body.acknowledged_at).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-010 Create a pending evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-05\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-010 REQ-VER-006 pending evaluation is stored\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().state).to.eql(\"Pending\");",
+                  "    pm.collectionVariables.set(\"evalPendingId\", pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-010 Reject acknowledgement while pending",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalPendingId}}/acknowledge"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-010 REQ-VER-006 a pending evaluation cannot be acknowledged\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"Pending -> Acknowledged\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-011 Create an evaluation to dispute",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-01\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-011 REQ-VER-007 dispute evaluation is pending\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.collectionVariables.set(\"evalDisputeId\", pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-011 Submit the dispute evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalDisputeId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sections\": [{\"id\": \"A\", \"earned\": 2, \"possible\": 2}, {\"id\": \"B\", \"earned\": 1, \"possible\": 1}, {\"id\": \"C\", \"earned\": 1, \"possible\": 1}]}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-011 REQ-VER-007 dispute evaluation is under review\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().state).to.eql(\"Under Review\");",
+                  "    pm.expect(pm.response.json().score).to.be.closeTo(100, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-011 Dispute with a comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalDisputeId}}/dispute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"comment\": \"The greeting question does not match the call.\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-011 REQ-VER-007 dispute keeps the score and stores the comment\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Disputed\");",
+                  "    pm.expect(body.score).to.be.closeTo(100, 0.001);",
+                  "    pm.expect(body.dispute_comment).to.include(\"does not match the call\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-012 Create an evaluation for an empty dispute",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-02\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-012 REQ-VER-007 empty-dispute evaluation is pending\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.collectionVariables.set(\"evalEmptyDisputeId\", pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-012 Submit before the empty dispute",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalEmptyDisputeId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sections\": [{\"id\": \"A\", \"earned\": 2, \"possible\": 2}, {\"id\": \"B\", \"earned\": 1, \"possible\": 1}, {\"id\": \"C\", \"earned\": 1, \"possible\": 1}]}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-012 REQ-VER-007 empty-dispute evaluation is under review\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().state).to.eql(\"Under Review\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-012 Reject a dispute without a comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalEmptyDisputeId}}/dispute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"comment\": \"\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-VER-012 REQ-VER-007 a dispute requires a comment\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "    pm.expect(pm.response.json().detail).to.include(\"dispute requires a comment\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-013 Resolve the dispute",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalDisputeId}}/resolve"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-013 REQ-VER-007 resolve returns the evaluation to under review\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Under Review\");",
+                  "    pm.expect(body.score).to.be.closeTo(100, 0.001);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-014 Coach the resolved evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalDisputeId}}/coach",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"note\": \"Review the greeting.\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-015 REQ-VER-008 coaching keeps the score\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Coached\");",
+                  "    pm.expect(body.score).to.be.closeTo(100, 0.001);",
+                  "    pm.expect(body.coaching_note).to.eql(\"Review the greeting.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-014 Complete the coached evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{evalDisputeId}}/complete"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.test(\"TC-VER-014 REQ-VER-005 a coached evaluation can complete\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Completed\");",
+                  "    pm.expect(body.score).to.be.closeTo(100, 0.001);",
+                  "    pm.expect(body.coaching_note).to.eql(\"Review the greeting.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.info.iteration > 0) {",
+              "    pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quality score boundaries",
+      "item": [
+        {
+          "name": "TC-VER-007 Create a threshold evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"interaction_id\": \"INT-05\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Threshold evaluation is pending\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json().state).to.eql(\"Pending\");",
+                  "    pm.collectionVariables.set(\"boundaryEvaluationId\", pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-VER-007 Submit the threshold sections",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/quality/evaluations/{{boundaryEvaluationId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sections\": [{\"id\": \"A\", \"earned\": {{earned_a}}, \"possible\": 2}, {\"id\": \"B\", \"earned\": {{earned_b}}, \"possible\": 1}, {\"id\": \"C\", \"earned\": {{earned_c}}, \"possible\": 1}]}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "const testCase = pm.iterationData.get(\"test_case\");",
+                  "const requirement = pm.iterationData.get(\"requirement\");",
+                  "pm.test(testCase + \" \" + requirement + \" quality threshold\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(body.state).to.eql(\"Under Review\");",
+                  "    pm.expect(body.score).to.be.closeTo(Number(pm.iterationData.get(\"expected_score\")), 0.001);",
+                  "    pm.expect(body.classification).to.eql(pm.iterationData.get(\"expected_classification\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const earned = pm.iterationData.get(\"earned_a\");",
+              "if (earned === undefined || earned === null || earned === \"\") {",
+              "    pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

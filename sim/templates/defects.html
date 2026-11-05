@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Planted defects</h1>
+<p>Switches default to ON. Turn one OFF to observe the rule from the M1 requirement. Reset restores the defaults.</p>
+{% for defect in defects %}
+<article class="record" data-testid="defect-{{ defect.id }}">
+  <h2>{{ defect.title }}</h2>
+  <p><span class="state" data-testid="defect-state">{{ "ON" if defect.enabled else "OFF" }}</span> {{ defect.workflow }} · {{ defect.requirement }}</p>
+  <p>{{ defect.summary }}</p>
+  <form method="post" action="/ui/defects/{{ defect.id }}">
+    {% if defect.enabled %}
+    <input type="hidden" name="enabled" value="false">
+    <button type="submit" data-testid="defect-toggle">Turn off</button>
+    {% else %}
+    <input type="hidden" name="enabled" value="true">
+    <button type="submit" data-testid="defect-toggle">Turn on</button>
+    {% endif %}
+  </form>
+</article>
+{% endfor %}
+{% endblock %}

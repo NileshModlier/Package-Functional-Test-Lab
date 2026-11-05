@@ -1,0 +1,34 @@
+id: TC-INT-011
+title: Decide the pass mark with the planted switch at exactly 80.00
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-004
+acceptance_criteria:
+  - REQ-INT-004 AC-1
+technique: Decision Table Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-INT-06
+objective: Conditions are the switch and the score. 80.00 fails only when pass_mark is on. 80.01 passes in both positions.
+preconditions:
+  - POST /test/reset before each row. Use ENR-01, which is In Progress.
+defect_switches:
+  - Row A pass_mark true. Row B pass_mark false. Row C pass_mark true.
+steps:
+  - "Row A: score 80.00 with pass_mark true."
+  - "Row B: score 80.00 with pass_mark false."
+  - "Row C: score 80.01 with pass_mark true."
+expected_results:
+  - Row A state is Failed.
+  - Row B state is Passed.
+  - Row C state is Passed.
+  - The stored score equals the submitted score in every row.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

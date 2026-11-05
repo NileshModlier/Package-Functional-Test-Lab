@@ -1,0 +1,35 @@
+id: TC-VER-015
+title: Keep the evaluation score when coaching is added and completed
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-008
+acceptance_criteria:
+  - REQ-VER-008 AC-1
+  - REQ-VER-008 AC-2
+  - REQ-VER-008 AC-5
+technique: Decision Table Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-06
+objective: Coaching stores a note on the same evaluation. It does not write a second total.
+preconditions:
+  - POST /test/reset. EV-02 score is 70.0.
+defect_switches:
+  []
+steps:
+  - POST coach on EV-02 with note Score must stay 70.
+  - POST complete on EV-02.
+  - POST coach on EV-01, which is Pending.
+expected_results:
+  - After coaching, score is still 70.0 and there is one score field.
+  - After complete, score is still 70.0 and state is Completed.
+  - Coaching EV-01 returns HTTP 409 and creates no coaching note.
+known_sut_differences:
+  - The simulator has no coaching record separate from the evaluation. The link is the evaluation id itself.
+execution:
+  automated: false
+  result: not-run

@@ -1,0 +1,4 @@
+earned_a,earned_b,earned_c,expected_score,expected_classification,test_case,requirement
+1.9995,1,0,79.99,Below standard,TC-VER-007,REQ-VER-004
+2,1,0,80.00,Meets standard,TC-VER-007,REQ-VER-004
+2,1,0.0005,80.01,Meets standard,TC-VER-008,REQ-VER-004

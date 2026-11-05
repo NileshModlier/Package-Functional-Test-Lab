@@ -1,0 +1,31 @@
+id: TC-INT-017
+title: Shift the certificate issued date one day early when the defect is on
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-007
+acceptance_criteria:
+  - REQ-INT-007 AC-3
+technique: Negative Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-INT-09
+objective: The planted date defect is visible by comparing issued_on with completion_date.
+preconditions:
+  - POST /test/reset. certificate_date remains true, its seeded value.
+defect_switches:
+  - Set pass_mark to false. Leave certificate_date true.
+steps:
+  - Enroll LN-01 in ACT-102, start, submit score 90, and complete.
+expected_results:
+  - state is Completed.
+  - issued_on is one calendar day before completion_date.
+  - completion_date itself is not shifted.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

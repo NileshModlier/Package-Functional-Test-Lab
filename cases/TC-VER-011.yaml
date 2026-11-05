@@ -1,0 +1,33 @@
+id: TC-VER-011
+title: Dispute an under-review evaluation with a comment
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-007
+acceptance_criteria:
+  - REQ-VER-007 AC-1
+  - REQ-VER-007 AC-3
+technique: State Transition Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-05
+objective: A comment and the under-review state are both required to enter Disputed. The score stays.
+preconditions:
+  - POST /test/reset. EV-02 is Under Review with score 70.0.
+defect_switches:
+  []
+steps:
+  - POST /api/quality/evaluations/EV-02/dispute with comment The greeting question does not match the call.
+expected_results:
+  - HTTP 200.
+  - state is Disputed.
+  - dispute_comment stores that text.
+  - score remains 70.0.
+known_sut_differences:
+  - Submit already places EV-02 in Under Review. The simulator does not keep a separate Waiting for review status.
+execution:
+  automated: false
+  result: not-run

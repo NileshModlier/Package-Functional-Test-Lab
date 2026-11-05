@@ -1,0 +1,35 @@
+id: TC-VER-005
+title: Apply section weights 60, 20, and 20
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-002
+  - REQ-VER-003
+acceptance_criteria:
+  - REQ-VER-002 AC-5
+  - REQ-VER-003 AC-3
+  - REQ-VER-003 AC-4
+technique: Decision Table Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-VER-02
+objective: Half of section A contributes 30. Full B and C contribute 20 each. The total is 70.00.
+preconditions:
+  - POST /test/reset. EV-01 is Pending.
+defect_switches:
+  - Set quality_score to false.
+steps:
+  - Submit A 1/2, B 1/1, C 1/1.
+expected_results:
+  - HTTP 200.
+  - score is 70.00.
+  - classification is Below standard.
+  - "Changing B or C is not required to see that A's contribution is 30.00 of that 70.00."
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

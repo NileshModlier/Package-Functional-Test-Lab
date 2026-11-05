@@ -1,0 +1,38 @@
+id: TC-INT-021
+title: Explore reset and completion for a stray certificate
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-005
+  - REQ-INT-006
+  - REQ-INT-007
+acceptance_criteria:
+  - REQ-INT-005 AC-2
+  - REQ-INT-006 AC-2
+  - REQ-INT-007 AC-4
+technique: Exploratory Testing
+priority: High
+automation_intent: manual-exploratory
+assumption_ids:
+  - ASM-INT-07
+  - ASM-INT-09
+objective: "Charter: after a failure and a reset, look for a certificate, a cleared history, or a second completion date."
+preconditions:
+  - POST /test/reset. Time box 30 minutes. pass_mark may be left on.
+defect_switches:
+  []
+steps:
+  - Use the learning page and the API without a fixed script.
+  - Fail an ACT-102 attempt, reset it, pass a later attempt, and complete it.
+  - Note any certificate created before the pass, any lost attempt row, or any completion date that moves.
+expected_results:
+  - Notes cite the requirement used as the oracle.
+  - A surprise that contradicts an acceptance criterion becomes a defect against that requirement.
+  - A surprise the specification never mentioned is filed as SPEC, not forced into a pass.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

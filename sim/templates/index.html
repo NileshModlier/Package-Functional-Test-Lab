@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Package Functional Test Lab</h1>
+<p class="lede">A simulated application for three study workflows. Use it as the target for later browser and API checks. It does not connect to a vendor system.</p>
+<section class="cards">
+  <a class="card" href="/learning">
+    <h2>Learning</h2>
+    <p>{{ learners }} sample learners. Catalog, enrollment, modules, assessment, completion, and certificate.</p>
+  </a>
+  <a class="card" href="/quality">
+    <h2>Quality</h2>
+    <p>{{ evaluations }} sample evaluations. Interaction, evaluation, scoring, coaching, and acknowledgement.</p>
+  </a>
+  <a class="card" href="/workorders">
+    <h2>Work orders</h2>
+    <p>{{ work_orders }} sample work orders. Request, approval, assignment, work, completion, and closure.</p>
+  </a>
+</section>
+{% endblock %}

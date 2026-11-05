@@ -1,0 +1,33 @@
+id: TC-TRI-011
+title: Accept time entries at 0.01 and 24.00 hours
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-006
+acceptance_criteria:
+  - REQ-TRI-006 AC-1
+  - REQ-TRI-006 AC-5
+technique: Boundary Value Analysis
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-06
+objective: The inclusive upper bound is 24.00. The smallest accepted hundredth is 0.01.
+preconditions:
+  - POST /test/reset. WO-05 is INPRG.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders/WO-05/time with technician_id TEC-01 and hours 0.01.
+  - POST the same route with hours 24.
+expected_results:
+  - Both responses are HTTP 200.
+  - Both lines are stored with those hours.
+  - state remains INPRG after each post.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

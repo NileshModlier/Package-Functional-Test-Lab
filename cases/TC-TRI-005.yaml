@@ -1,0 +1,37 @@
+id: TC-TRI-005
+title: Keep one work order when approval is repeated
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-003
+acceptance_criteria:
+  - REQ-TRI-003 AC-1
+  - REQ-TRI-003 AC-2
+  - REQ-TRI-003 AC-5
+technique: Decision Table Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-01
+  - ASM-TRI-04
+objective: The approved record is the task. A second approval does not create another id. Building and request class stay with it.
+preconditions:
+  - POST /test/reset. WO-02 building is HQ and request_class is HVAC.
+defect_switches:
+  []
+steps:
+  - Approve WO-02 with actor_id AP-01.
+  - Count work orders.
+  - POST the same approval again.
+expected_results:
+  - After the first approval there is still one WO-02, state APPR, building HQ, and request_class HVAC.
+  - The work-order count is still 10.
+  - The second approval returns HTTP 409.
+  - No start timestamp is set by approval.
+known_sut_differences:
+  - M1 modeled a child task. This system under test uses the work order itself as that single task. A canceled request with zero tasks is not represented because CAN is not a state.
+execution:
+  automated: false
+  result: not-run

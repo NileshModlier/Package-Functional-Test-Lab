@@ -1,0 +1,35 @@
+id: TC-INT-001
+title: Enroll a learner in an available activity
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-001
+acceptance_criteria:
+  - REQ-INT-001 AC-1
+  - REQ-INT-001 AC-5
+technique: Equivalence Partitioning
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-01
+  - ASM-INT-04
+objective: The valid class is a published activity and an eligible learner. One representative is ACT-102.
+preconditions:
+  - POST /test/reset has reloaded the seed.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments with learner_id LN-01 and activity_id ACT-102.
+  - GET /api/learning/enrollments and read the new record.
+expected_results:
+  - The response is HTTP 200 and returns a new ENR id.
+  - state is Enrolled.
+  - score, completion_date, and certificate_id are empty.
+  - attempts is 0.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

@@ -1,0 +1,25 @@
+id: TC-INT-023
+title: "An attendance or launch record with no submitted answers does not create a score"
+simulated: true
+system_under_test: package-sim
+milestone: M7
+status: Accepted
+source: ai-draft
+reviewed_by: "Lab reviewer"
+proposal_id: REQ-INT-003-02
+requirement_ids:
+  - REQ-INT-003
+acceptance_criteria:
+  - REQ-INT-003 AC-4
+technique: negative
+priority: Medium
+automation_intent: not-executable
+steps:
+  - "An attendance or launch record with no submitted answers does not create a score."
+expected_results:
+  - "An attendance or launch record with no submitted answers does not create a score."
+why: "REQ-INT-003 AC-4 is not cited by an existing case."
+known_sut_differences: []
+execution:
+  automated: false
+  result: not-run

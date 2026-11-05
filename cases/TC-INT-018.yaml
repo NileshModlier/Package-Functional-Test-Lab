@@ -1,0 +1,34 @@
+id: TC-INT-018
+title: Create an enrollment through the simulator write route
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-008
+acceptance_criteria:
+  - REQ-INT-008 AC-1
+  - REQ-INT-008 AC-3
+technique: Equivalence Partitioning
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-10
+objective: The executable write class is POST /api/learning/enrollments. Duplicate and draft bodies are the invalid class.
+preconditions:
+  - POST /test/reset.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments with learner_id LN-01 and activity_id ACT-102.
+  - Repeat that call.
+  - POST learner_id LN-02 and activity_id ACT-103.
+expected_results:
+  - The first call returns HTTP 200 and an enrollment id in state Enrolled.
+  - The duplicate and the draft activity each return HTTP 409 and add nothing.
+known_sut_differences:
+  - The M1 contract name is /simulated/intellum/enrollments. The system under test exposes /api/learning/enrollments.
+  - Read-only scope, write-only scope, and PATCH of a note are not implemented. Do not treat their absence as a pass.
+execution:
+  automated: false
+  result: not-run

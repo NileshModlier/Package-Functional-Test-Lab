@@ -1,0 +1,33 @@
+id: TC-INT-006
+title: Store one assessment attempt on an in-progress enrollment
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-003
+acceptance_criteria:
+  - REQ-INT-003 AC-1
+  - REQ-INT-003 AC-5
+technique: Equivalence Partitioning
+priority: Medium
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-INT-07
+objective: A submitted score is one valid attempt class. A second submit is not a second score on the same attempt.
+preconditions:
+  - POST /test/reset. ENR-01 is In Progress.
+defect_switches:
+  - Set pass_mark to false before the score is submitted.
+steps:
+  - POST /api/learning/enrollments/ENR-01/assessment with score 91.
+  - POST the same assessment again with score 70.
+expected_results:
+  - The first response is HTTP 200, attempts is 1, score is 91.00, and attempt_history has one row.
+  - The second response is HTTP 409 because the enrollment is no longer In Progress.
+  - attempt_history still has one row and the stored score is still 91.00.
+known_sut_differences:
+  - The simulator accepts a numeric score. It does not score an item bank, so unanswered-question points are not a separate input.
+execution:
+  automated: false
+  result: not-run

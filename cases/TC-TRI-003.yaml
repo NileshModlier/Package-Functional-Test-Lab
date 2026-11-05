@@ -1,0 +1,31 @@
+id: TC-TRI-003
+title: Reject self-approval of a waiting request
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-002
+acceptance_criteria:
+  - REQ-TRI-002 AC-2
+technique: Negative Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-03
+objective: The requester is not an allowed approver.
+preconditions:
+  - POST /test/reset. WO-02 is WAPPR and its requester_id is RQ-02.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders/WO-02/transition with to APPR and actor_id RQ-02.
+expected_results:
+  - The response is HTTP 409.
+  - The detail says the requester cannot approve their own request.
+  - state stays WAPPR and approved_by stays empty.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

@@ -1,0 +1,33 @@
+id: TC-TRI-008
+title: Decide whether an inactive technician can be assigned
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-004
+acceptance_criteria:
+  - REQ-TRI-004 AC-4
+  - REQ-TRI-004 AC-5
+technique: Decision Table Testing
+priority: Medium
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-TRI-05
+objective: TEC-02 is inactive. The switch decides the APPR assignment. CLOSE rejects assignment in both switch positions.
+preconditions:
+  - POST /test/reset before each row. WO-03 is APPR. WO-08 is CLOSE. TEC-02 active is false.
+defect_switches:
+  - Row A inactive_assignment false. Row B inactive_assignment true.
+steps:
+  - Assign TEC-02 to WO-03 in each row.
+  - With the switch true, also assign TEC-02 to WO-08.
+expected_results:
+  - "Switch off: WO-03 returns HTTP 409 and technician_id stays empty."
+  - "Switch on: WO-03 returns HTTP 200 and technician_id is TEC-02."
+  - WO-08 returns HTTP 409 even when the switch is on.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

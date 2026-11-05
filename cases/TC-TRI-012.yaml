@@ -1,0 +1,33 @@
+id: TC-TRI-012
+title: Reject time outside 0 to 24 hours and time on a closed order
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-006
+acceptance_criteria:
+  - REQ-TRI-006 AC-2
+  - REQ-TRI-006 AC-3
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-06
+objective: 0, 24.01, and CLOSE are outside the accepted time class.
+preconditions:
+  - POST /test/reset. WO-05 is INPRG. WO-08 is CLOSE. Count WO-05 time lines first.
+defect_switches:
+  []
+steps:
+  - POST WO-05 time with hours 0.
+  - POST WO-05 time with hours 24.01.
+  - POST WO-08 time with hours 1 and technician_id TEC-01.
+expected_results:
+  - Hours 0 and 24.01 return HTTP 422 and add no line.
+  - The closed order returns HTTP 409 and its time lines are unchanged.
+known_sut_differences:
+  - "Another person's time line cannot be edited because the API has no edit route. Reading it is the GET of the order."
+execution:
+  automated: false
+  result: not-run

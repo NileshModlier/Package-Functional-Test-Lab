@@ -1,0 +1,25 @@
+id: TC-TRI-026
+title: "A technician can read a coworker's time line and cannot change it"
+simulated: true
+system_under_test: package-sim
+milestone: M7
+status: Accepted
+source: ai-draft
+reviewed_by: "Lab reviewer"
+proposal_id: REQ-TRI-006-01
+requirement_ids:
+  - REQ-TRI-006
+acceptance_criteria:
+  - REQ-TRI-006 AC-4
+technique: negative
+priority: Medium
+automation_intent: not-executable
+steps:
+  - "A technician can read a coworker's time line and cannot change it."
+expected_results:
+  - "A technician can read a coworker's time line and cannot change it."
+why: "REQ-TRI-006 AC-4 is not cited by an existing case."
+known_sut_differences: []
+execution:
+  automated: false
+  result: not-run

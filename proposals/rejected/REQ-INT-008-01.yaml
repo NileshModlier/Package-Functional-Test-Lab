@@ -1,0 +1,14 @@
+proposal_id: REQ-INT-008-01
+title: "The same call with read-only scope is rejected and creates nothing"
+technique: negative
+steps:
+  - "The same call with read-only scope is rejected and creates nothing."
+expected:
+  - "The same call with read-only scope is rejected and creates nothing."
+why: "REQ-INT-008 AC-2 is not cited by an existing case."
+requirement: REQ-INT-008
+criterion: REQ-INT-008 AC-2
+source: ai-draft
+status: rejected
+reviewed_by: "Lab reviewer"
+rejection_reason: "TC-INT-018 already records that read-only scope is not implemented and must not be treated as a pass."

@@ -1,0 +1,32 @@
+id: TC-TRI-013
+title: Record a positive material quantity without changing status
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-007
+acceptance_criteria:
+  - REQ-TRI-007 AC-1
+  - REQ-TRI-007 AC-5
+technique: Equivalence Partitioning
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-06
+objective: A positive quantity on an approved order is the valid material class.
+preconditions:
+  - POST /test/reset. WO-04 is APPR.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders/WO-04/materials with item_id MAT-FILTER and quantity 2.
+expected_results:
+  - HTTP 200.
+  - The line stores MAT-FILTER, quantity 2, and an entered time.
+  - state remains APPR.
+known_sut_differences:
+  - Quantity does not change an inventory balance.
+execution:
+  automated: false
+  result: not-run

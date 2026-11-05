@@ -1,0 +1,31 @@
+id: TC-VER-006
+title: Ignore section weights when the quality score defect is on
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-003
+acceptance_criteria:
+  - REQ-VER-003 AC-3
+technique: Decision Table Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-VER-02
+objective: The same answers score 70.00 with the switch off and 83.33 with the switch on.
+preconditions:
+  - POST /test/reset before each row. EV-01 is Pending.
+defect_switches:
+  - Row A quality_score false. Row B quality_score true.
+steps:
+  - Submit A 1/2, B 1/1, C 1/1 in each row.
+expected_results:
+  - "Switch off: score 70.00 and Below standard."
+  - "Switch on: score 83.33 and Meets standard."
+  - The unweighted result is the mean of 50, 100, and 100.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

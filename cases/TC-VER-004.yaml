@@ -1,0 +1,35 @@
+id: TC-VER-004
+title: Score all-yes as 100 and all-no as 0
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-003
+acceptance_criteria:
+  - REQ-VER-003 AC-1
+  - REQ-VER-003 AC-2
+  - REQ-VER-003 AC-5
+technique: Equivalence Partitioning
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-VER-02
+objective: The two endpoint classes of the form are every point earned and no points earned.
+preconditions:
+  - POST /test/reset before each class. EV-01 is Pending.
+defect_switches:
+  - Set quality_score to false so weights are applied.
+steps:
+  - Submit A 2/2, B 1/1, C 1/1.
+  - Reset, set quality_score false, and submit A 0/2, B 0/1, C 0/1.
+expected_results:
+  - Both submits return HTTP 200 and state Under Review.
+  - All earned points store score 100.00.
+  - No earned points store score 0.00.
+  - The interaction id remains the one already on EV-01.
+known_sut_differences:
+  - "Under Review is the simulator name for a submitted evaluation. M1's Evaluation submitted and Waiting for review are not separate states."
+execution:
+  automated: false
+  result: not-run

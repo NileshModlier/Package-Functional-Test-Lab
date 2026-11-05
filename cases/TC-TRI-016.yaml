@@ -1,0 +1,36 @@
+id: TC-TRI-016
+title: Complete in-progress work
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-008
+acceptance_criteria:
+  - REQ-TRI-008 AC-1
+  - REQ-TRI-008 AC-2
+  - REQ-TRI-008 AC-4
+technique: State Transition Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-TRI-07
+objective: INPRG to COMP records completion and still accepts actuals. It does not close the order.
+preconditions:
+  - POST /test/reset. WO-05 is INPRG.
+defect_switches:
+  - Set invalid_completion to false so only the legal completion path is under test.
+steps:
+  - POST WO-05 transition to COMP.
+  - POST a time line of 1 hour for TEC-01.
+  - Read state, completed_at, and closed_at.
+expected_results:
+  - The transition returns HTTP 200 and state COMP.
+  - completed_at is set.
+  - The time line is accepted.
+  - closed_at stays empty and state is not CLOSE.
+known_sut_differences:
+  - No requestor notification is written at completion.
+execution:
+  automated: false
+  result: not-run

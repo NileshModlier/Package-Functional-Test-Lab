@@ -1,0 +1,31 @@
+id: TC-TRI-006
+title: Leave an unapproved request without an extra task
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-003
+acceptance_criteria:
+  - REQ-TRI-003 AC-4
+technique: Negative Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-04
+objective: Draft and WAPPR do not grow a second record that could be worked.
+preconditions:
+  - POST /test/reset. WO-01 is Draft. WO-02 is WAPPR.
+defect_switches:
+  []
+steps:
+  - GET /api/work/orders.
+expected_results:
+  - WO-01 and WO-02 each appear once.
+  - Neither has a child id.
+  - WO-02 technician_id is empty, so approval has not assigned work either.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

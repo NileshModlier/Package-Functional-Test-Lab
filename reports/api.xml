@@ -1,0 +1,253 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="Package Sim API" tests="82" failures="0" errors="0" skipped="0"><testsuite name="Setup / Health" id="a58277d9-7a19-4e1b-8ff8-db64287c58eb" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="Health reports the simulated service" time="0.003" classname="SetupHealth" />
+  </testsuite>
+  <testsuite name="Setup / Reset seed" id="335d7c48-bfaf-4ab7-8bac-528d9d914675" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="Reset reloads the seed" time="0.004" classname="SetupResetSeed" />
+  </testsuite>
+  <testsuite name="Setup / Disable pass_mark" id="d906f5d6-f360-4841-b96a-022489fe6a57" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="Disable pass_mark so the M1 rule is under test" time="0.004" classname="SetupDisablePassMark" />
+  </testsuite>
+  <testsuite name="Setup / Disable certificate_date" id="8b44c880-2f63-41f5-a043-b02c2001e74e" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="Disable certificate_date so the M1 rule is under test" time="0.008" classname="SetupDisableCertificateDate" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-019 Read learners" id="38aa4182-69ae-4b01-976a-34d9bdc5a0ff" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.018">
+    <testcase name="TC-INT-019 REQ-INT-009 learners expose id and name" time="0.018" classname="WorkflowTcInt019ReadLearners" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-001 Enroll an available activity" id="5e5141f8-3002-480c-a99f-3afedd79f88c" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.021">
+    <testcase name="TC-INT-001 REQ-INT-001 enrollment is created" time="0.021" classname="WorkflowTcInt001EnrollAnAvailableActivity" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-002 Reject a duplicate enrollment" id="33ab332e-c2c0-43ff-b3f7-985ebdcaf6b8" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="TC-INT-002 REQ-INT-001 duplicate enrollment is rejected" time="0.016" classname="WorkflowTcInt002RejectADuplicateEnrollment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-004 Start the enrollment" id="5d7f0cd4-c097-4f0f-8f78-f4684b8bf1c4" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.020">
+    <testcase name="TC-INT-004 REQ-INT-002 content modules complete on start" time="0.020" classname="WorkflowTcInt004StartTheEnrollment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-009 Pass at 80.01" id="18a468b5-60ba-4205-9720-079030af1e54" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.020">
+    <testcase name="TC-INT-009 REQ-INT-004 score 80.01 passes" time="0.020" classname="WorkflowTcInt009PassAt8001" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-019 Read the passed enrollment" id="e7300b78-bccc-45e7-b3d5-29f388e803e5" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.009">
+    <testcase name="TC-INT-019 REQ-INT-009 stored enrollment keeps the pass" time="0.009" classname="WorkflowTcInt019ReadThePassedEnrollment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-014 Complete the passed enrollment" id="aff34b89-1778-4543-9f8b-16ed8f894294" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-INT-014 REQ-INT-006 completion is stored once" time="0.005" classname="WorkflowTcInt014CompleteThePassedEnrollment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-016 Read the certificate dates" id="427938b7-7cec-4429-8972-3adcb7a8da8e" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.003">
+    <testcase name="TC-INT-016 REQ-INT-007 issued date matches completion" time="0.003" classname="WorkflowTcInt016ReadTheCertificateDates" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-014 Reject a second completion" id="745b3dc9-525c-4f94-92a8-0d33bd7784e5" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.003">
+    <testcase name="TC-INT-014 REQ-INT-006 a completed enrollment stays completed" time="0.003" classname="WorkflowTcInt014RejectASecondCompletion" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-010 Fail at 79.99" id="3cc1b075-4862-49f1-8160-4d3158e2129b" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.012">
+    <testcase name="TC-INT-010 REQ-INT-004 REQ-INT-005 79.99 fails without a certificate" time="0.012" classname="WorkflowTcInt010FailAt7999" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-008 Enroll for the 80.00 threshold" id="11213066-45dd-4f84-919b-cd5f10f21f36" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.012">
+    <testcase name="TC-INT-008 REQ-INT-004 threshold enrollment is created" time="0.012" classname="WorkflowTcInt008EnrollForThe8000Threshold" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-008 Start the threshold enrollment" id="f06646f5-1bd8-4e98-acc7-af9e724208b2" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.015">
+    <testcase name="TC-INT-008 REQ-INT-004 threshold enrollment is in progress" time="0.015" classname="WorkflowTcInt008StartTheThresholdEnrollment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-008 Pass at 80.00" id="419b5268-0115-4646-be65-2f2a0ac9aa45" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="TC-INT-008 REQ-INT-004 score 80.00 passes" time="0.008" classname="WorkflowTcInt008PassAt8000" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-003 Reject an unpublished activity" id="4016324a-a013-43a6-b9a7-aa750cf1022b" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-INT-003 REQ-INT-001 a draft activity cannot be enrolled" time="0.005" classname="WorkflowTcInt003RejectAnUnpublishedActivity" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-005 Enroll before an early assessment" id="0660197b-c5b5-4b29-99e7-a40f5bffe560" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-INT-005 REQ-INT-002 early enrollment is only enrolled" time="0.004" classname="WorkflowTcInt005EnrollBeforeAnEarlyAssessment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-005 Reject an assessment before start" id="5ce4d3fe-6ae7-4ada-8352-05f1d0ae240b" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="TC-INT-005 REQ-INT-002 assessment before start is rejected" time="0.016" classname="WorkflowTcInt005RejectAnAssessmentBeforeStart" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-015 Reject completion of a failed enrollment" id="86d74cca-aa6d-4b0d-8637-935d7878698a" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-INT-015 REQ-INT-006 a failed enrollment cannot complete" time="0.006" classname="WorkflowTcInt015RejectCompletionOfAFailedEnrollment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-INT-020 Reject an unknown enrollment" id="2c6324b4-f040-4250-afba-98b760fb1833" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-INT-020 REQ-INT-009 an unknown enrollment is not found" time="0.004" classname="WorkflowTcInt020RejectAnUnknownEnrollment" />
+  </testsuite>
+  <testsuite name="Pass mark boundaries / TC-INT-007 Enroll a boundary learner" id="65ececee-fec0-45b9-a11a-7a839e80bd6c" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="Boundary enrollment is created" time="0.004" classname="PassMarkBoundariesTcInt007EnrollABoundaryLearner" />
+  </testsuite>
+  <testsuite name="Pass mark boundaries / TC-INT-007 Start the boundary enrollment" id="81883e60-86a2-4736-abab-2f91e9e5467d" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Boundary enrollment is in progress" time="0.004" classname="PassMarkBoundariesTcInt007StartTheBoundaryEnrollment" />
+  </testsuite>
+  <testsuite name="Pass mark boundaries / TC-INT-007 Assess the boundary score" id="51ec16ef-665d-4870-a34f-ed4ccb39119c" timestamp="2026-11-05T06:50:49.175Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-INT-010 REQ-INT-004 boundary score" time="0.004" classname="PassMarkBoundariesTcInt007AssessTheBoundaryScore" />
+    <testcase name="TC-INT-008 REQ-INT-004 boundary score" time="0.004" classname="PassMarkBoundariesTcInt007AssessTheBoundaryScore" />
+    <testcase name="TC-INT-009 REQ-INT-004 boundary score" time="0.004" classname="PassMarkBoundariesTcInt007AssessTheBoundaryScore" />
+    <testcase name="TC-INT-007 REQ-INT-003 boundary score" time="0.004" classname="PassMarkBoundariesTcInt007AssessTheBoundaryScore" />
+  </testsuite>
+<testsuite name="Setup / Health" id="0b4178cb-744e-47e5-baf9-002bc7243ea4" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.011">
+    <testcase name="Health reports the simulated service" time="0.008" classname="SetupHealth" />
+  </testsuite>
+  <testsuite name="Setup / Reset seed" id="d9ec4938-aa12-4bf3-a76d-feeabb3ea3e6" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.012">
+    <testcase name="Reset reloads the seed" time="0.017" classname="SetupResetSeed" />
+  </testsuite>
+  <testsuite name="Setup / Disable quality_score" id="e261490f-fedf-4c4d-a1ef-177179f3a4fe" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="Disable quality_score so the M1 rule is under test" time="0.010" classname="SetupDisableQualityScore" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-001 Read interactions" id="8e7a08eb-b3d8-4c5e-b296-bedfaad8e0cd" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-VER-001 REQ-VER-001 interactions expose the recorded fields" time="0.004" classname="WorkflowTcVer001ReadInteractions" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-001 Create an evaluation" id="05a9c6bb-fccf-4c62-84c6-7ebcafafec45" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-VER-001 REQ-VER-001 a new evaluation is pending" time="0.006" classname="WorkflowTcVer001CreateAnEvaluation" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-002 Reject an unknown interaction" id="e6c5e991-42bd-4915-8fb7-770dff229ddb" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="TC-VER-002 REQ-VER-001 an unknown interaction is not found" time="0.007" classname="WorkflowTcVer002RejectAnUnknownInteraction" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-003 Create an evaluation for a partial submit" id="29686751-7bf0-4db9-8332-364014d2c3de" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="TC-VER-003 REQ-VER-002 partial evaluation is pending" time="0.007" classname="WorkflowTcVer003CreateAnEvaluationForAPartialSubmit" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-003 Reject a submit that omits a section" id="2ea90abd-64d7-4409-b782-6d9de68b8786" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-VER-003 REQ-VER-002 sections A, B, and C are required" time="0.006" classname="WorkflowTcVer003RejectASubmitThatOmitsASection" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-004 Create an all-yes evaluation" id="007d4594-e922-4e09-83f7-19d22b81bc5d" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-VER-004 REQ-VER-003 all-yes evaluation is pending" time="0.005" classname="WorkflowTcVer004CreateAnAllYesEvaluation" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-004 Score all yes as 100" id="aca788be-767a-440a-a2e3-05b0aab1ddf4" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-VER-004 REQ-VER-003 all yes scores 100 and meets standard" time="0.005" classname="WorkflowTcVer004ScoreAllYesAs100" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-004 Create an all-no evaluation" id="b7733a23-ea3e-4005-8ecf-60f3bb03214c" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-VER-004 REQ-VER-003 all-no evaluation is pending" time="0.006" classname="WorkflowTcVer004CreateAnAllNoEvaluation" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-004 Score all no as 0" id="3649f2b9-6171-4f1b-aced-c6d5f3f9f1fa" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-VER-004 REQ-VER-003 all no scores 0 and is below standard" time="0.005" classname="WorkflowTcVer004ScoreAllNoAs0" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-005 Score weighted sections as 70" id="2fa2baf4-1677-4856-b6eb-47efcccb1c6b" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="TC-VER-005 REQ-VER-003 weighted score is 70 and below standard" time="0.010" classname="WorkflowTcVer005ScoreWeightedSectionsAs70" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-009 Acknowledge a scored evaluation" id="6bc75cba-a4d2-4041-83e6-75c228c2a249" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-VER-009 REQ-VER-006 acknowledgement keeps the score" time="0.005" classname="WorkflowTcVer009AcknowledgeAScoredEvaluation" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-010 Create a pending evaluation" id="bdb94e87-d88c-4bf6-b684-24d8f7b7e0b9" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-VER-010 REQ-VER-006 pending evaluation is stored" time="0.006" classname="WorkflowTcVer010CreateAPendingEvaluation" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-010 Reject acknowledgement while pending" id="8ae66e97-52d5-4d70-ad90-d83ea9a5a759" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-VER-010 REQ-VER-006 a pending evaluation cannot be acknowledged" time="0.006" classname="WorkflowTcVer010RejectAcknowledgementWhilePending" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-011 Create an evaluation to dispute" id="03172ae2-c66e-4d79-8294-099cc0743a63" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="TC-VER-011 REQ-VER-007 dispute evaluation is pending" time="0.007" classname="WorkflowTcVer011CreateAnEvaluationToDispute" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-011 Submit the dispute evaluation" id="f643b2bd-5f2a-42f3-b389-710d51c75870" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-VER-011 REQ-VER-007 dispute evaluation is under review" time="0.004" classname="WorkflowTcVer011SubmitTheDisputeEvaluation" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-011 Dispute with a comment" id="495bc567-c210-4b89-9401-8d87efefdc18" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="TC-VER-011 REQ-VER-007 dispute keeps the score and stores the comment" time="0.007" classname="WorkflowTcVer011DisputeWithAComment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-012 Create an evaluation for an empty dispute" id="dd505e5b-9bbe-4d10-9f47-075af2faf0d3" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-VER-012 REQ-VER-007 empty-dispute evaluation is pending" time="0.004" classname="WorkflowTcVer012CreateAnEvaluationForAnEmptyDispute" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-012 Submit before the empty dispute" id="770edcdf-ef7b-432b-a159-41075895a0f4" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-VER-012 REQ-VER-007 empty-dispute evaluation is under review" time="0.004" classname="WorkflowTcVer012SubmitBeforeTheEmptyDispute" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-012 Reject a dispute without a comment" id="5643f343-6f78-4d6a-b27b-d50a697dfe9a" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-VER-012 REQ-VER-007 a dispute requires a comment" time="0.005" classname="WorkflowTcVer012RejectADisputeWithoutAComment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-013 Resolve the dispute" id="40ee5ee5-a525-4dd2-b02a-ef2d3ab3c71a" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.022">
+    <testcase name="TC-VER-013 REQ-VER-007 resolve returns the evaluation to under review" time="0.022" classname="WorkflowTcVer013ResolveTheDispute" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-014 Coach the resolved evaluation" id="bf4aab76-98a8-4a79-a3fd-c60784cd3728" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.015">
+    <testcase name="TC-VER-015 REQ-VER-008 coaching keeps the score" time="0.015" classname="WorkflowTcVer014CoachTheResolvedEvaluation" />
+  </testsuite>
+  <testsuite name="Workflow / TC-VER-014 Complete the coached evaluation" id="164903c6-bc82-4c2a-97fa-94d1f77ba02b" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-VER-014 REQ-VER-005 a coached evaluation can complete" time="0.005" classname="WorkflowTcVer014CompleteTheCoachedEvaluation" />
+  </testsuite>
+  <testsuite name="Quality score boundaries / TC-VER-007 Create a threshold evaluation" id="009feadb-f5ef-4c59-8231-58d2f10e86a0" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="Threshold evaluation is pending" time="0.016" classname="QualityScoreBoundariesTcVer007CreateAThresholdEvaluation" />
+  </testsuite>
+  <testsuite name="Quality score boundaries / TC-VER-007 Submit the threshold sections" id="b6aca2f0-8c32-4b26-b002-6f4df88b1aea" timestamp="2026-11-05T06:50:59.428Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="TC-VER-007 REQ-VER-004 quality threshold" time="0.008" classname="QualityScoreBoundariesTcVer007SubmitTheThresholdSections" />
+    <testcase name="TC-VER-008 REQ-VER-004 quality threshold" time="0.008" classname="QualityScoreBoundariesTcVer007SubmitTheThresholdSections" />
+  </testsuite>
+<testsuite name="Setup / Health" id="309c7417-1219-4436-be31-860f36bb6eb8" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="Health reports the simulated service" time="0.003" classname="SetupHealth" />
+  </testsuite>
+  <testsuite name="Setup / Reset seed" id="3e1c7479-9bfe-4bd8-8252-f18156bbd075" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Reset reloads the seed" time="0.004" classname="SetupResetSeed" />
+  </testsuite>
+  <testsuite name="Setup / Disable inactive_assignment" id="50f77a34-d131-47d2-8203-5b2011b7b46a" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Disable inactive_assignment so the M1 rule is under test" time="0.004" classname="SetupDisableInactiveAssignment" />
+  </testsuite>
+  <testsuite name="Setup / Disable invalid_completion" id="797c82c2-acf3-4b58-8519-a328b940efee" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.011">
+    <testcase name="Disable invalid_completion so the M1 rule is under test" time="0.004" classname="SetupDisableInvalidCompletion" />
+  </testsuite>
+  <testsuite name="Setup / Disable reopen_closed" id="f66a5c4f-0e48-464c-b65b-e5257b5ad9a5" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Disable reopen_closed so the M1 rule is under test" time="0.004" classname="SetupDisableReopenClosed" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-001 Reject a request missing a title" id="17ebe1d1-1b80-4caf-9e6b-6c3cf18b98f1" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="TC-TRI-001 REQ-TRI-001 a blank title is rejected" time="0.008" classname="WorkflowTcTri001RejectARequestMissingATitle" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-002 Create a service request" id="cd52ba3a-3c8b-448e-b9c3-93ef90901b99" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-TRI-002 REQ-TRI-001 a complete request is saved as Draft" time="0.005" classname="WorkflowTcTri002CreateAServiceRequest" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-002 Submit the request" id="3576e83f-bf0a-4cd8-b5b0-7fbf80e4d3f7" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="TC-TRI-002 REQ-TRI-001 the request moves to WAPPR" time="0.008" classname="WorkflowTcTri002SubmitTheRequest" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-003 Reject self-approval" id="aa582664-f798-4cff-ad1b-a082279b3df9" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.013">
+    <testcase name="TC-TRI-003 REQ-TRI-002 the requester cannot approve their own request" time="0.013" classname="WorkflowTcTri003RejectSelfApproval" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-004 Approve as a different person" id="1614a6a8-e64d-48d1-8aed-caca58f8b2e8" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.011">
+    <testcase name="TC-TRI-004 REQ-TRI-002 a different person can approve" time="0.011" classname="WorkflowTcTri004ApproveAsADifferentPerson" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-005 Reject a repeated approval" id="5a7e8101-5ffe-48f5-ab58-3c991b37ee3f" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-005 REQ-TRI-003 approving again does not create another order" time="0.004" classname="WorkflowTcTri005RejectARepeatedApproval" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-006 Read orders after approval" id="db9de2b7-22ba-4321-b993-ce8e4346587f" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="TC-TRI-005 REQ-TRI-003 TC-TRI-006 one approved order and the draft stays unassigned" time="0.010" classname="WorkflowTcTri006ReadOrdersAfterApproval" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-010 Reject start without a technician" id="0b353273-f992-4a09-93dc-dd28c38ec5fb" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="TC-TRI-010 REQ-TRI-005 start without a technician is rejected" time="0.008" classname="WorkflowTcTri010RejectStartWithoutATechnician" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-008 Reject an inactive technician" id="0ad41edc-e8ba-4d50-8cd7-2f2c456ef482" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="TC-TRI-008 REQ-TRI-004 an inactive technician is rejected" time="0.007" classname="WorkflowTcTri008RejectAnInactiveTechnician" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-008 Read WO-03 after the inactive assignment" id="011a6991-09b7-4df0-9289-8330dfeee249" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.003">
+    <testcase name="TC-TRI-008 REQ-TRI-004 WO-03 stays unassigned" time="0.003" classname="WorkflowTcTri008ReadWo03AfterTheInactiveAssignment" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-007 Assign an active technician" id="eb0468a3-00da-4aeb-a4ad-786063350c24" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.019">
+    <testcase name="TC-TRI-007 REQ-TRI-004 an active technician is assigned without starting" time="0.019" classname="WorkflowTcTri007AssignAnActiveTechnician" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-009 Start assigned work" id="f7b19fcf-1354-451b-9843-a7f87236f8cb" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-009 REQ-TRI-005 assigned work moves to INPRG" time="0.004" classname="WorkflowTcTri009StartAssignedWork" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-017 Reject completion from WMATL" id="105abc4a-883d-4893-8a5b-20ad718cb20e" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-017 REQ-TRI-008 WMATL cannot complete" time="0.004" classname="WorkflowTcTri017RejectCompletionFromWmatl" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-014 Reject a zero material quantity" id="c3c07cb9-7a2f-4a11-9c7e-28e64b930c5d" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-014 REQ-TRI-007 a zero quantity is rejected" time="0.004" classname="WorkflowTcTri014RejectAZeroMaterialQuantity" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-013 Record a material quantity" id="56203276-4c23-4cef-b24f-82f3c03bad95" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-013 REQ-TRI-007 material is stored and the state stays WMATL" time="0.004" classname="WorkflowTcTri013RecordAMaterialQuantity" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-015 Resume after waiting for material" id="335722a8-b298-45a2-beba-e21ee180b1bf" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-015 REQ-TRI-007 resume keeps the material line" time="0.004" classname="WorkflowTcTri015ResumeAfterWaitingForMaterial" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-020 Reject closure from INPRG" id="dcd10b5f-b5f7-4c9b-bae7-052211c26506" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="TC-TRI-020 REQ-TRI-009 INPRG cannot close" time="0.005" classname="WorkflowTcTri020RejectClosureFromInprg" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-017 Reject completion from APPR" id="e8719bc3-d779-4057-9421-2a431649f0f8" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-017 REQ-TRI-008 APPR cannot complete" time="0.004" classname="WorkflowTcTri017RejectCompletionFromAppr" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-016 Complete in-progress work" id="8a9460a4-612d-4a49-8aa1-01888d20b811" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-016 REQ-TRI-008 INPRG can complete" time="0.004" classname="WorkflowTcTri016CompleteInProgressWork" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-019 Close completed work" id="b45c5fd5-4164-4792-bb73-00dd5c00961f" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-019 REQ-TRI-009 COMP can close" time="0.004" classname="WorkflowTcTri019CloseCompletedWork" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-023 Reject rework without a reason" id="d6088374-7941-4369-aa35-46dd7e256318" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-TRI-023 REQ-TRI-010 rework requires a reason" time="0.006" classname="WorkflowTcTri023RejectReworkWithoutAReason" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-022 Rework completed work" id="b633aa46-466f-489c-a7f9-2a5b318adb67" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-022 REQ-TRI-010 rework returns to INPRG and keeps actuals" time="0.004" classname="WorkflowTcTri022ReworkCompletedWork" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-012 Reject time on a closed order" id="21f9e576-4347-451b-a3b7-31aa22eee73a" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-012 REQ-TRI-006 time on a closed order is rejected" time="0.004" classname="WorkflowTcTri012RejectTimeOnAClosedOrder" />
+  </testsuite>
+  <testsuite name="Workflow / TC-TRI-021 Reject reopen of a closed order" id="2fee2a1e-62d2-44e2-9321-dffe07437315" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="TC-TRI-021 REQ-TRI-009 a closed order stays closed" time="0.004" classname="WorkflowTcTri021RejectReopenOfAClosedOrder" />
+  </testsuite>
+  <testsuite name="Work hour boundaries / TC-TRI-011 Record boundary hours" id="c49e2a68-d771-4c15-b7b5-76e59b0da681" timestamp="2026-11-05T06:51:07.774Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="TC-TRI-012 REQ-TRI-006 work hours boundary" time="0.004" classname="WorkHourBoundariesTcTri011RecordBoundaryHours" />
+    <testcase name="TC-TRI-011 REQ-TRI-006 work hours boundary" time="0.004" classname="WorkHourBoundariesTcTri011RecordBoundaryHours" />
+  </testsuite>
+</testsuites>

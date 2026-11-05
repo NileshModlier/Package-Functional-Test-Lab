@@ -1,0 +1,33 @@
+id: TC-INT-012
+title: Reset a failed enrollment and keep attempt history
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-005
+acceptance_criteria:
+  - REQ-INT-005 AC-3
+  - REQ-INT-005 AC-5
+technique: State Transition Testing
+priority: High
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-02
+  - ASM-INT-07
+objective: A fail returns to Enrolled on the same record. Reset does not open a second active enrollment.
+preconditions:
+  - POST /test/reset. ENR-03 is Failed with one history row for LN-03 on ACT-101.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments/ENR-03/reset.
+  - POST /api/learning/enrollments with learner_id LN-03 and activity_id ACT-101.
+expected_results:
+  - Reset returns HTTP 200, state Enrolled, score empty, and attempt_history still holding the failed row.
+  - The new enroll returns HTTP 409 because ENR-03 is active again.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

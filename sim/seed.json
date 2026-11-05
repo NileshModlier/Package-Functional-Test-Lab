@@ -1,0 +1,423 @@
+{
+  "defects": {
+    "pass_mark": true,
+    "certificate_date": true,
+    "quality_score": true,
+    "reopen_closed": true,
+    "invalid_completion": true,
+    "inactive_assignment": true
+  },
+  "learners": [
+    {"id": "LN-01", "name": "Ava Patel", "active": true},
+    {"id": "LN-02", "name": "Ben Okonkwo", "active": true},
+    {"id": "LN-03", "name": "Chen Liu", "active": true},
+    {"id": "LN-04", "name": "Dana Brooks", "active": true},
+    {"id": "LN-05", "name": "Eli Navarro", "active": true}
+  ],
+  "activities": [
+    {
+      "id": "ACT-101",
+      "code": "SAFE",
+      "title": "Simulated workplace safety",
+      "status": "Available",
+      "certificate": true,
+      "expiration_months": 12,
+      "modules": [
+        {"id": "MOD-1", "title": "Hazard overview", "kind": "content"},
+        {"id": "MOD-2", "title": "Safe work steps", "kind": "content"},
+        {"id": "MOD-3", "title": "Knowledge check", "kind": "assessment"}
+      ]
+    },
+    {
+      "id": "ACT-102",
+      "code": "GREET",
+      "title": "Simulated customer greeting",
+      "status": "Available",
+      "certificate": true,
+      "expiration_months": 12,
+      "modules": [
+        {"id": "MOD-4", "title": "Greeting standard", "kind": "content"},
+        {"id": "MOD-5", "title": "Greeting check", "kind": "assessment"}
+      ]
+    },
+    {
+      "id": "ACT-103",
+      "code": "DRAFT",
+      "title": "Unpublished orientation",
+      "status": "Draft",
+      "certificate": false,
+      "expiration_months": 0,
+      "modules": [
+        {"id": "MOD-6", "title": "Draft module", "kind": "content"}
+      ]
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "ENR-01",
+      "learner_id": "LN-01",
+      "activity_id": "ACT-101",
+      "state": "In Progress",
+      "score": null,
+      "attempts": 0,
+      "attempt_history": [],
+      "completion_date": null,
+      "certificate_id": null,
+      "modules": [
+        {"id": "MOD-1", "title": "Hazard overview", "kind": "content", "status": "Complete"},
+        {"id": "MOD-2", "title": "Safe work steps", "kind": "content", "status": "Complete"},
+        {"id": "MOD-3", "title": "Knowledge check", "kind": "assessment", "status": "Not started"}
+      ]
+    },
+    {
+      "id": "ENR-02",
+      "learner_id": "LN-02",
+      "activity_id": "ACT-101",
+      "state": "Passed",
+      "score": 80.0,
+      "attempts": 1,
+      "attempt_history": [{"attempt": 1, "score": 80.0, "outcome": "Passed"}],
+      "completion_date": null,
+      "certificate_id": null,
+      "modules": [
+        {"id": "MOD-1", "title": "Hazard overview", "kind": "content", "status": "Complete"},
+        {"id": "MOD-2", "title": "Safe work steps", "kind": "content", "status": "Complete"},
+        {"id": "MOD-3", "title": "Knowledge check", "kind": "assessment", "status": "Passed"}
+      ]
+    },
+    {
+      "id": "ENR-03",
+      "learner_id": "LN-03",
+      "activity_id": "ACT-101",
+      "state": "Failed",
+      "score": 79.99,
+      "attempts": 1,
+      "attempt_history": [{"attempt": 1, "score": 79.99, "outcome": "Failed"}],
+      "completion_date": null,
+      "certificate_id": null,
+      "modules": [
+        {"id": "MOD-1", "title": "Hazard overview", "kind": "content", "status": "Complete"},
+        {"id": "MOD-2", "title": "Safe work steps", "kind": "content", "status": "Complete"},
+        {"id": "MOD-3", "title": "Knowledge check", "kind": "assessment", "status": "Failed"}
+      ]
+    },
+    {
+      "id": "ENR-04",
+      "learner_id": "LN-04",
+      "activity_id": "ACT-101",
+      "state": "Enrolled",
+      "score": null,
+      "attempts": 0,
+      "attempt_history": [],
+      "completion_date": null,
+      "certificate_id": null,
+      "modules": [
+        {"id": "MOD-1", "title": "Hazard overview", "kind": "content", "status": "Not started"},
+        {"id": "MOD-2", "title": "Safe work steps", "kind": "content", "status": "Not started"},
+        {"id": "MOD-3", "title": "Knowledge check", "kind": "assessment", "status": "Not started"}
+      ]
+    },
+    {
+      "id": "ENR-05",
+      "learner_id": "LN-05",
+      "activity_id": "ACT-101",
+      "state": "Completed",
+      "score": 92.0,
+      "attempts": 1,
+      "attempt_history": [{"attempt": 1, "score": 92.0, "outcome": "Passed"}],
+      "completion_date": "2026-04-01",
+      "certificate_id": "SIM-CERT-SAFE-2026-01",
+      "modules": [
+        {"id": "MOD-1", "title": "Hazard overview", "kind": "content", "status": "Complete"},
+        {"id": "MOD-2", "title": "Safe work steps", "kind": "content", "status": "Complete"},
+        {"id": "MOD-3", "title": "Knowledge check", "kind": "assessment", "status": "Passed"}
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "id": "SIM-CERT-SAFE-2026-01",
+      "enrollment_id": "ENR-05",
+      "learner_id": "LN-05",
+      "activity_id": "ACT-101",
+      "issued_on": "2026-04-01",
+      "completion_date": "2026-04-01",
+      "expires_on": "2027-04-01",
+      "score": 92.0
+    }
+  ],
+  "interactions": [
+    {"id": "INT-01", "channel": "Voice", "agent_id": "AG-01", "agent_name": "Nora Singh", "summary": "Billing question"},
+    {"id": "INT-02", "channel": "Chat", "agent_id": "AG-02", "agent_name": "Omar Haddad", "summary": "Password reset"},
+    {"id": "INT-03", "channel": "Voice", "agent_id": "AG-03", "agent_name": "Priya Shah", "summary": "Delivery delay"},
+    {"id": "INT-04", "channel": "Email", "agent_id": "AG-04", "agent_name": "Jonah Berg", "summary": "Refund request"},
+    {"id": "INT-05", "channel": "Voice", "agent_id": "AG-05", "agent_name": "Lina Costa", "summary": "Plan change"}
+  ],
+  "evaluations": [
+    {
+      "id": "EV-01",
+      "interaction_id": "INT-01",
+      "agent_id": "AG-01",
+      "agent_name": "Nora Singh",
+      "state": "Pending",
+      "score": null,
+      "classification": null,
+      "sections": null,
+      "acknowledged_at": null,
+      "dispute_comment": null,
+      "coaching_note": null
+    },
+    {
+      "id": "EV-02",
+      "interaction_id": "INT-02",
+      "agent_id": "AG-02",
+      "agent_name": "Omar Haddad",
+      "state": "Under Review",
+      "score": 70.0,
+      "classification": "Below standard",
+      "sections": [
+        {"id": "A", "earned": 1, "possible": 2},
+        {"id": "B", "earned": 1, "possible": 1},
+        {"id": "C", "earned": 1, "possible": 1}
+      ],
+      "acknowledged_at": null,
+      "dispute_comment": null,
+      "coaching_note": null
+    },
+    {
+      "id": "EV-03",
+      "interaction_id": "INT-03",
+      "agent_id": "AG-03",
+      "agent_name": "Priya Shah",
+      "state": "Acknowledged",
+      "score": 100.0,
+      "classification": "Meets standard",
+      "sections": [
+        {"id": "A", "earned": 2, "possible": 2},
+        {"id": "B", "earned": 1, "possible": 1},
+        {"id": "C", "earned": 1, "possible": 1}
+      ],
+      "acknowledged_at": "2026-04-02T15:00:00+00:00",
+      "dispute_comment": null,
+      "coaching_note": null
+    },
+    {
+      "id": "EV-04",
+      "interaction_id": "INT-04",
+      "agent_id": "AG-04",
+      "agent_name": "Jonah Berg",
+      "state": "Disputed",
+      "score": 50.0,
+      "classification": "Below standard",
+      "sections": [
+        {"id": "A", "earned": 1, "possible": 2},
+        {"id": "B", "earned": 0, "possible": 1},
+        {"id": "C", "earned": 1, "possible": 1}
+      ],
+      "acknowledged_at": null,
+      "dispute_comment": "The greeting question does not match the call.",
+      "coaching_note": null
+    },
+    {
+      "id": "EV-05",
+      "interaction_id": "INT-05",
+      "agent_id": "AG-05",
+      "agent_name": "Lina Costa",
+      "state": "Coached",
+      "score": 80.0,
+      "classification": "Meets standard",
+      "sections": [
+        {"id": "A", "earned": 2, "possible": 2},
+        {"id": "B", "earned": 0, "possible": 1},
+        {"id": "C", "earned": 1, "possible": 1}
+      ],
+      "acknowledged_at": null,
+      "dispute_comment": null,
+      "coaching_note": "Reviewed the verification step."
+    }
+  ],
+  "technicians": [
+    {"id": "TEC-01", "name": "Riley Quinn", "active": true},
+    {"id": "TEC-02", "name": "Sam Ortiz", "active": false}
+  ],
+  "work_orders": [
+    {
+      "id": "WO-01",
+      "title": "Replace lobby lamp",
+      "requester_id": "RQ-01",
+      "building": "HQ",
+      "request_class": "Electrical",
+      "description": "Lamp above the reception desk is out.",
+      "state": "Draft",
+      "technician_id": null,
+      "approved_by": null,
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [],
+      "material_entries": []
+    },
+    {
+      "id": "WO-02",
+      "title": "Cool meeting room 2",
+      "requester_id": "RQ-02",
+      "building": "HQ",
+      "request_class": "HVAC",
+      "description": "Room 2 is too warm.",
+      "state": "WAPPR",
+      "technician_id": null,
+      "approved_by": null,
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [],
+      "material_entries": []
+    },
+    {
+      "id": "WO-03",
+      "title": "Unblock floor drain",
+      "requester_id": "RQ-03",
+      "building": "Plant A",
+      "request_class": "Plumbing",
+      "description": "Drain outside the workshop is slow.",
+      "state": "APPR",
+      "technician_id": null,
+      "approved_by": "AP-01",
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [],
+      "material_entries": []
+    },
+    {
+      "id": "WO-04",
+      "title": "Repair dock door",
+      "requester_id": "RQ-04",
+      "building": "Plant A",
+      "request_class": "Doors",
+      "description": "Dock door 3 does not close.",
+      "state": "APPR",
+      "technician_id": "TEC-01",
+      "approved_by": "AP-01",
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [],
+      "material_entries": []
+    },
+    {
+      "id": "WO-05",
+      "title": "Patch corridor carpet",
+      "requester_id": "RQ-01",
+      "building": "HQ",
+      "request_class": "Floors",
+      "description": "Torn carpet outside room 14.",
+      "state": "INPRG",
+      "technician_id": "TEC-01",
+      "approved_by": "AP-01",
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [
+        {"technician_id": "TEC-01", "hours": 1.5, "entered_at": "2026-04-03T13:00:00+00:00"}
+      ],
+      "material_entries": [
+        {"item_id": "MAT-CARPET", "quantity": 1.0, "entered_at": "2026-04-03T13:05:00+00:00"}
+      ]
+    },
+    {
+      "id": "WO-06",
+      "title": "Replace air filter",
+      "requester_id": "RQ-05",
+      "building": "Plant B",
+      "request_class": "HVAC",
+      "description": "Filter on unit 4 is due.",
+      "state": "WMATL",
+      "technician_id": "TEC-01",
+      "approved_by": "AP-01",
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [],
+      "material_entries": []
+    },
+    {
+      "id": "WO-07",
+      "title": "Tighten stair rail",
+      "requester_id": "RQ-02",
+      "building": "HQ",
+      "request_class": "Carpentry",
+      "description": "North stair rail moves when used.",
+      "state": "COMP",
+      "technician_id": "TEC-01",
+      "approved_by": "AP-01",
+      "completed_at": "2026-04-04T16:00:00+00:00",
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [
+        {"technician_id": "TEC-01", "hours": 0.5, "entered_at": "2026-04-04T15:00:00+00:00"}
+      ],
+      "material_entries": []
+    },
+    {
+      "id": "WO-08",
+      "title": "Service east elevator",
+      "requester_id": "RQ-03",
+      "building": "HQ",
+      "request_class": "Vertical transport",
+      "description": "Annual inspection follow-up.",
+      "state": "CLOSE",
+      "technician_id": "TEC-01",
+      "approved_by": "AP-01",
+      "completed_at": "2026-03-20T11:00:00+00:00",
+      "closed_at": "2026-03-21T09:00:00+00:00",
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [
+        {"technician_id": "TEC-01", "hours": 3.0, "entered_at": "2026-03-20T10:00:00+00:00"}
+      ],
+      "material_entries": []
+    },
+    {
+      "id": "WO-09",
+      "title": "Reset badge reader",
+      "requester_id": "RQ-04",
+      "building": "Plant B",
+      "request_class": "Security",
+      "description": "Reader at door B2 is offline.",
+      "state": "INPRG",
+      "technician_id": "TEC-01",
+      "approved_by": "AP-01",
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [],
+      "material_entries": []
+    },
+    {
+      "id": "WO-10",
+      "title": "Paint scuffed wall",
+      "requester_id": "RQ-05",
+      "building": "HQ",
+      "request_class": "Painting",
+      "description": "Wall by the cafeteria door is marked.",
+      "state": "APPR",
+      "technician_id": "TEC-01",
+      "approved_by": "AP-01",
+      "completed_at": null,
+      "closed_at": null,
+      "reopened": false,
+      "rejection_reason": null,
+      "time_entries": [],
+      "material_entries": []
+    }
+  ]
+}

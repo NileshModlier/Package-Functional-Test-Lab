@@ -1,0 +1,34 @@
+id: TC-VER-001
+title: Start an evaluation for a recorded interaction
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-001
+acceptance_criteria:
+  - REQ-VER-001 AC-1
+  - REQ-VER-001 AC-2
+  - REQ-VER-001 AC-5
+technique: Equivalence Partitioning
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-01
+objective: The valid class is an existing interaction. The new evaluation is Pending and unscored.
+preconditions:
+  - POST /test/reset.
+defect_switches:
+  []
+steps:
+  - POST /api/quality/evaluations with interaction_id INT-01.
+expected_results:
+  - HTTP 200 and a new EV id.
+  - state is Pending. In this simulator Pending is the M1 in-progress evaluation.
+  - score, classification, acknowledged_at, and coaching_note are empty.
+  - The new record is an evaluation, not a second object for coaching.
+known_sut_differences:
+  - M1 status Evaluation in progress is stored as Pending.
+execution:
+  automated: false
+  result: not-run

@@ -1,0 +1,32 @@
+id: TC-TRI-001
+title: Reject a service request that is missing a required field
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-001
+acceptance_criteria:
+  - REQ-TRI-001 AC-1
+  - REQ-TRI-001 AC-3
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-02
+objective: A body missing the description does not become a request.
+preconditions:
+  - POST /test/reset. Record the work-order count.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders with title, requester_id RQ-01, building HQ, and request_class General, and omit description.
+expected_results:
+  - The response is HTTP 422.
+  - The work-order count stays 10.
+  - No new record is left in Draft or WAPPR.
+known_sut_differences:
+  - The simulator rejects the incomplete body instead of storing a draft. An incomplete draft is not created.
+execution:
+  automated: false
+  result: not-run

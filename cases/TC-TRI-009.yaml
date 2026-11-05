@@ -1,0 +1,31 @@
+id: TC-TRI-009
+title: Start assigned work
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-TRI-005
+acceptance_criteria:
+  - REQ-TRI-005 AC-1
+technique: State Transition Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-TRI-07
+objective: APPR with a technician moves to INPRG.
+preconditions:
+  - POST /test/reset. WO-04 is APPR and assigned to TEC-01.
+defect_switches:
+  []
+steps:
+  - POST /api/work/orders/WO-04/transition with to INPRG.
+expected_results:
+  - HTTP 200.
+  - state is INPRG.
+  - technician_id remains TEC-01.
+known_sut_differences:
+  - started_at is not stored. The executable oracle is the state change.
+execution:
+  automated: false
+  result: not-run

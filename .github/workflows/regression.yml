@@ -1,0 +1,133 @@
+# Simulated lab regression. Not a vendor pipeline.
+name: Regression
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      force_defects:
+        description: Enable planted defects. The run is expected to fail.
+        type: choice
+        options:
+          - "false"
+          - "true"
+        default: "false"
+  schedule:
+    - cron: "30 20 * * *"
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    env:
+      SIM_EXTERNAL: "1"
+      SIM_FORCE_DEFECTS: ${{ github.event.inputs.force_defects == 'true' && 'on' || '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Review gate
+        run: python tools/check_reviewed.py
+
+      - name: Node setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r sim/requirements.txt
+          npm install -g newman
+
+      - name: Install Chromium
+        run: python -m playwright install --with-deps chromium
+
+      - name: Start Package Sim
+        run: |
+          mkdir -p reports test-results
+          # setsid leaves the server outside the step process group so later steps can reach it.
+          setsid python -m uvicorn sim.app:app --host 127.0.0.1 --port 18765 > reports/sim.log 2>&1 < /dev/null &
+          echo $! > reports/sim.pid
+
+      - name: Wait for health
+        run: |
+          python -c "import time, urllib.request; url='http://127.0.0.1:18765/health';
+          last=None
+          for _ in range(60):
+              try:
+                  with urllib.request.urlopen(url, timeout=2) as response:
+                      if response.status == 200:
+                          raise SystemExit(0)
+              except SystemExit:
+                  raise
+              except Exception as exc:
+                  last = exc
+                  time.sleep(1)
+          raise SystemExit(f'Package Sim did not become ready: {last}')"
+
+      - name: Playwright tests
+        id: playwright
+        run: |
+          python -m pytest tests/ui --junitxml=reports/ui.xml --tracing=retain-on-failure --screenshot=only-on-failure --video=retain-on-failure --output=test-results
+
+      - name: Newman tests
+        id: newman
+        if: success() || failure()
+        run: |
+          fail=0
+          extra=()
+          if [ "${SIM_FORCE_DEFECTS}" = "on" ]; then
+            extra+=(--env-var forceDefects=true)
+          fi
+          run_collection() {
+            if ! newman run "$1" -e postman/environments/local.postman_environment.json -d "$2" --reporters junit,json --reporter-junit-export "$3" --reporter-json-export "$4" "${extra[@]}"; then
+              fail=1
+            fi
+          }
+          run_collection postman/collections/learning.postman_collection.json postman/data/pass_mark_boundaries.csv reports/_learning.xml reports/_learning.json
+          run_collection postman/collections/quality.postman_collection.json postman/data/quality_boundaries.csv reports/_quality.xml reports/_quality.json
+          run_collection postman/collections/workorders.postman_collection.json postman/data/work_hours_boundaries.csv reports/_workorders.xml reports/_workorders.json
+          exit "$fail"
+
+      - name: Generate summary
+        if: success() || failure()
+        env:
+          FORCE_DEFECTS: ${{ github.event.inputs.force_defects == 'true' && 'true' || 'false' }}
+        run: |
+          args=(--check --ui reports/ui.xml --summary reports/summary.md --api-xml reports/api.xml --api-json reports/api.json --status trace/regression_status.md)
+          for part in reports/_learning.xml reports/_quality.xml reports/_workorders.xml; do
+            if [ -f "$part" ]; then args+=(--api-part "$part"); fi
+          done
+          for part in reports/_learning.json reports/_quality.json reports/_workorders.json; do
+            if [ -f "$part" ]; then args+=(--json-part "$part"); fi
+          done
+          if [ "$FORCE_DEFECTS" = "true" ]; then args+=(--force-defects); fi
+          python tools/ci_summary.py "${args[@]}"
+
+      - name: Upload reports
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-reports
+          if-no-files-found: warn
+          path: |
+            reports/ui.xml
+            reports/api.xml
+            reports/api.json
+            reports/summary.md
+            reports/sim.log
+            trace/regression_status.md
+            test-results/
+
+      - name: Stop Package Sim
+        if: always()
+        run: |
+          if [ -f reports/sim.pid ]; then
+            kill "$(cat reports/sim.pid)" || true
+          fi

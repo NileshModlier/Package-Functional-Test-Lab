@@ -1,0 +1,25 @@
+id: TC-VER-018
+title: "A second acknowledgement by the same employee leaves the original time in place"
+simulated: true
+system_under_test: package-sim
+milestone: M7
+status: Accepted
+source: ai-draft
+reviewed_by: "Lab reviewer"
+proposal_id: REQ-VER-006-01
+requirement_ids:
+  - REQ-VER-006
+acceptance_criteria:
+  - REQ-VER-006 AC-2
+technique: exploratory
+priority: Medium
+automation_intent: not-executable
+steps:
+  - "A second acknowledgement by the same employee leaves the original time in place."
+expected_results:
+  - "A second acknowledgement by the same employee leaves the original time in place."
+why: "REQ-VER-006 AC-2 is not cited by an existing case."
+known_sut_differences: []
+execution:
+  automated: false
+  result: not-run

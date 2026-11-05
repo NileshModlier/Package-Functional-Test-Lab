@@ -1,0 +1,32 @@
+id: TC-INT-005
+title: Reject an assessment before the enrollment is in progress
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-002
+acceptance_criteria:
+  - REQ-INT-002 AC-3
+  - REQ-INT-002 AC-4
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-05
+objective: The assessment module cannot be completed while the enrollment is still Enrolled.
+preconditions:
+  - POST /test/reset. ENR-04 is Enrolled.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments/ENR-04/assessment with score 90.
+expected_results:
+  - The response is HTTP 409.
+  - state remains Enrolled.
+  - MOD-3 remains Not started and score stays empty.
+known_sut_differences:
+  []
+execution:
+  automated: false
+  result: not-run

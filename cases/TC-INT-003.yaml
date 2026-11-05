@@ -1,0 +1,30 @@
+id: TC-INT-003
+title: Reject enrollment in an unpublished activity
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-001
+acceptance_criteria:
+  - REQ-INT-001 AC-4
+technique: Negative Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-INT-03
+objective: Draft is the invalid class for enrollment.
+preconditions:
+  - POST /test/reset. ACT-103 status is Draft.
+defect_switches:
+  []
+steps:
+  - POST /api/learning/enrollments with learner_id LN-01 and activity_id ACT-103.
+expected_results:
+  - The response is HTTP 409.
+  - No enrollment for ACT-103 is created.
+known_sut_differences:
+  - The simulator uses catalog status Draft for what M1 calls unpublished.
+execution:
+  automated: false
+  result: not-run

@@ -1,0 +1,39 @@
+id: TC-INT-016
+title: Issue one certificate when a configured activity is completed
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-INT-007
+acceptance_criteria:
+  - REQ-INT-007 AC-1
+  - REQ-INT-007 AC-2
+  - REQ-INT-007 AC-3
+  - REQ-INT-007 AC-4
+technique: Decision Table Testing
+priority: High
+automation_intent: later-api-with-defect-switch
+assumption_ids:
+  - ASM-INT-09
+objective: Rows are passed-with-certificate, failed-with-certificate, and a second completion signal.
+preconditions:
+  - POST /test/reset.
+defect_switches:
+  - Set pass_mark and certificate_date to false.
+steps:
+  - Enroll LN-01 in ACT-102, start, submit score 90, and complete.
+  - Confirm ENR-03, which is Failed, has no certificate.
+  - POST complete again on the ACT-102 enrollment.
+expected_results:
+  - Exactly one new certificate is linked to LN-01 and ACT-102.
+  - "The code matches SIM-CERT-GREET-{current year}-01 and does not collide with SIM-CERT-SAFE-2026-01."
+  - issued_on equals completion_date.
+  - expires_on is 12 months after completion_date.
+  - ENR-03 certificate_id is empty.
+  - The second complete returns HTTP 409 and does not add a certificate.
+known_sut_differences:
+  - ACT-102 is the certificate-on representative. The seed has no available activity with certificates turned off, so REQ-INT-007 AC-5 is not executable.
+execution:
+  automated: false
+  result: not-run

@@ -1,0 +1,35 @@
+id: TC-VER-014
+title: Move coaching from under review through coached to completed
+simulated: true
+system_under_test: package-sim
+milestone: M3
+status: Designed
+requirement_ids:
+  - REQ-VER-005
+acceptance_criteria:
+  - REQ-VER-005 AC-2
+  - REQ-VER-005 AC-5
+technique: State Transition Testing
+priority: Medium
+automation_intent: later-api
+assumption_ids:
+  - ASM-VER-07
+objective: A note is required to enter Coached. Completed is reached from Coached.
+preconditions:
+  - POST /test/reset. EV-02 is Under Review.
+defect_switches:
+  []
+steps:
+  - POST coach on EV-02 with an empty note.
+  - POST coach on EV-02 with note Reviewed the verification step.
+  - POST complete on EV-02.
+expected_results:
+  - The empty note returns HTTP 422 and the state stays Under Review.
+  - The note returns HTTP 200 and state Coached.
+  - Complete returns HTTP 200 and state Completed.
+known_sut_differences:
+  - M1 coaching statuses Pending, Await Employee Feedback, and Await Coach Follow Up are not separate states.
+  - Coached on this record is the coaching lifecycle the simulator exposes.
+execution:
+  automated: false
+  result: not-run
